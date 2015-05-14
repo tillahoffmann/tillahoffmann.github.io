@@ -41,7 +41,11 @@ In Sec. 2, we derive an expression for the conditional distribution of a parame
 
 ## 2\. Conditional distributions
 
-For the purpose of Gibbs sampling, we are interested in the conditional distribution of a parameter $\theta_ {i}$ given all the other parameters \[ C_ {i}\equiv P\left(\theta_ {i}|MN_ {i}\bar{N}_ {i}\right). \] By Eq. (\ref{eq:independence-nbar}), $\theta_ {i}$ and $\bar{N}_ {i}$ are conditionally independent given $N_ {i}$ such that 
+For the purpose of Gibbs sampling, we are interested in the conditional distribution of a parameter $\theta_ {i}$ given all the other parameters 
+\begin{equation\*} 
+C_ {i}\equiv P\left(\theta_ {i}|MN_ {i}\bar{N}_ {i}\right). 
+\end{equation\*} 
+By Eq. (\ref{eq:independence-nbar}), $\theta_ {i}$ and $\bar{N}_ {i}$ are conditionally independent given $N_ {i}$ such that 
 \begin{equation} P\left(\theta_ {i}|MN_ {i}\bar{N}_ {i}\right) =P\left(\theta_ {i}|MN_ {i}\right),\label{eq:reduced-conditional} \end{equation}
 i.e. the distribution of $\theta_ {i}$ depends only on the parameter values of its neighbours $N_ {i}$ as expected. Expanding the parameter set $N_ {i}$ and applying Bayes' theorem to Eq. (\ref{eq:reduced-conditional}), we find 
 \begin{align\*} 
