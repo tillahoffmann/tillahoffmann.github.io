@@ -26,8 +26,7 @@ To utilise the structure of the graphical model, we demand the following conditi
 P\left(\theta_ {i}\bar{N}_ {i}|MN_ {i}\right) & =P\left(\theta_ {i}|MN_ {i}\right)P\left(\theta_ {i}|MN_ {i}\right)\label{eq:independence-nbar}\\\\
 P\left(\theta_ {i}N_ {i}^{\mathrm{s}}|MN_ {i}^{\mathrm{p}}\right) & =P\left(\theta_ {i}|MN_ {i}^{\mathrm{p}}\right)P\left(N_ {i}^{\mathrm{s}}|MN_ {i}^{\mathrm{p}}\right).\label{eq:independence-sibling} \end{align}
 
-
- The first relation states that $\theta_ {i}$ is independent of other parameters $\bar{N}_ {i}$ given its neighbours $N_ {i}$. The second relation states that $\theta_ {i}$ is independent of its siblings $N_ {i}^{\mathrm{s}}$ given its parents $N_ {i}^{\mathrm{p}}$.
+The first relation states that $\theta_ {i}$ is independent of other parameters $\bar{N}_ {i}$ given its neighbours $N_ {i}$. The second relation states that $\theta_ {i}$ is independent of its siblings $N_ {i}^{\mathrm{s}}$ given its parents $N_ {i}^{\mathrm{p}}$.
 
 In Sec. 2, we derive an expression for the conditional distribution of a parameter given its neighbours. We apply this expression to the simple linear model in Sec. 4.
 
@@ -49,13 +48,7 @@ We are only interested in the form of the conditional distribution $C_ {i}$ as a
 \end{equation} 
 where we have used the conditional independence relation Eq. (\ref{eq:independence-sibling}) to simplify the second term. We can easily obtain both terms from the bipartite graph. The general structure is shown in Fig. 2.
 
-<div class="figure">
-
-<center>![](./data/uploads/graphicalgibbs/general.png)</center>
-
-<div>**Figure 2:** Local neighbourhood of a parameter $\theta_ {i}$ under consideration. The factors in Eq. (\ref{eq:final}) are given by the conditional distributions shown as grey rectangles.</div>
-
-</div>
+{% include figure.html url="/images/graphicalgibbs/general.png" description="**Figure 2:** Local neighbourhood of a parameter $\theta_ {i}$ under consideration. The factors in Eq. (\ref{eq:final}) are given by the conditional distributions shown as grey rectangles." %}
 
 ## 3\. Marginalisation
 
@@ -66,13 +59,7 @@ P\left(z|x\right) & =\int dy\, P\left(zy|x\right)\\\\
 \end{align\*}
 where we have used the conditional independence relation $P\left(z|xy\right)=P\left(z|y\right)$ to obtain the second line.
 
-<div class="figure">
-
-<center>![](./data/uploads/graphicalgibbs/general.png)</center>
-
-<div>**Figure 3:** Left: Example model with latent parameter $y$. Right: The same model marginalised over $y$.</div>
-
-</div>
+{% include figure.html url="/images/graphicalgibbs/general.png" description="**Figure 3:** Left: Example model with latent parameter $y$. Right: The same model marginalised over $y$." %}
 
 ## 4\. Linear model
 
@@ -103,23 +90,13 @@ C_ {a} & =N\left(\frac{\left\langle x\hat{y}\right\rangle -b\left\langle x\right
 C_ {b} & =N\left(\left\langle \hat{y}\right\rangle -a\left\langle x\right\rangle ,\frac{\sigma^{2}}{N}\right). \end{align\*}
  We can now sample from the conditional distributions.
 
-Consider a synthetic dataset of $N=100$ data points generated from a population with mean $\mu=5$ and standard deviation $\Sigma=1$ as shown in Fig. 4}. The linear model is defined by $a=3$, $b=-1$ and we assume a measurement error with standard deviation $\sigma=0.1$. Running a Gibbs sampler for $10^{5}$ steps, we posterior densities for the linear model parameters $a$ and $b$ as shown in Fig. 5.
+Consider a synthetic dataset of $N=100$ data points generated from a population with mean $\mu=5$ and standard deviation $\Sigma=1$ as shown in Fig. 4}. The linear model is defined by $a=3$, $b=-1$ and we assume a measurement error with standard deviation $\sigma=0.1$. Running a Gibbs sampler for $10^{5}$ steps, we posterior densities for the linear model parameters $a$ and $b$ as shown in Fig. 5 and 6.
 
-<div class="figure">
+{% include figure.html url="/images/graphicalgibbs/example.png" description="**Figure 4:** Synthetic dataset with $N=100$ data points in red. The true linear model is shown in black. See the main text for parameter values used to generate the dataset." %}
 
-<center>![](./data/uploads/graphicalgibbs/example.png)</center>
+{% include figure.html url="/images/graphicalgibbs/density2d.png" description="**Figure 5:** Joint posterior density $P\left(ab|Md\right)$ for the linear model parameters. The dashed crosshair represents the true parameter values." %}
 
-<div>**Figure 4:** Synthetic dataset with $N=100$ data points in red. The true linear model is shown in black. See the main text for parameter values used to generate the dataset.</div>
-
-</div>
-
-<div class="figure">
-
-<center>![](./data/uploads/graphicalgibbs/density2d.png)![](./data/uploads/graphicalgibbs/density1d.png)</center>
-
-<div>**Figure 5:** Left panel: Joint posterior density $P\left(ab|Md\right)$ for the linear model parameters. The dashed crosshair represents the true parameter values. Right panel: Marginalised posterior densities $P\left(a|Md\right)$ and $P\left(b|Md\right)$ of the model parameters. The dashed lines indicate the true parameter values.</div>
-
-</div>
+{% include figure.html url="/images/graphicalgibbs/density1d.png" description="**Figure 6:** Marginalised posterior densities $P\left(a|Md\right)$ and $P\left(b|Md\right)$ of the model parameters. The dashed lines indicate the true parameter values." %}
 
 ## References
 
