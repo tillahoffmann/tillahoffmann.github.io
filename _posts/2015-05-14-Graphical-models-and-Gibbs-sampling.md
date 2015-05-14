@@ -6,7 +6,7 @@ published: true
 
 ## 1\. Bipartite graphical models
 
-Consider a hierarchical model \\(M\\) with parameters $\Theta=\left\{ \theta_ {1},\theta_ {2},\ldots\right\} $ that we want to fit to data \(d\). Without loss of generality, we can consider the data as part of the parameter set if we demand that "data parameters" are leaf nodes of the graphical model. In the following, we will not distinguish between parameters and data.
+Consider a hierarchical model $M$ with parameters $\Theta=\left\ { \theta_ {1},\theta_ {2},\ldots\right\ } $ that we want to fit to data $d$. Without loss of generality, we can consider the data as part of the parameter set if we demand that "data parameters" are leaf nodes of the graphical model. In the following, we will not distinguish between parameters and data.
 
 We represent the hierarchical model as a directed, acyclic, bipartite graph [1]: Each node is classified as either a **parameter** or a **distribution**; links are directed and are only allowed between groups but not within groups; the graph must not have any directed cycles. As an example, we consider the simple linear model shown in Fig. 1.
 
