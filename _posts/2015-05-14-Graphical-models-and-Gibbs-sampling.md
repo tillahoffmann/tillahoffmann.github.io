@@ -1,6 +1,7 @@
 ---
-published: false
+published: true
 ---
+
 
 ## 1\. Bipartite graphical models
 
