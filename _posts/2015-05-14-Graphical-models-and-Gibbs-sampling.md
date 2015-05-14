@@ -10,15 +10,7 @@ Consider a hierarchical model $M$ with parameters $\Theta=\left\\{ \theta_ {1},\
 
 We represent the hierarchical model as a directed, acyclic, bipartite graph [1]: Each node is classified as either a **parameter** or a **distribution**; links are directed and are only allowed between groups but not within groups; the graph must not have any directed cycles. As an example, we consider the simple linear model shown in Fig. 1.
 
-<style scoped="" type="text/css">div.figure { background: #EEE; border: #CCC solid 1px; width: 100%; padding: 10px; };</style>
-
-<div class="figure">
-
-<center>![](./data/uploads/graphicalgibbs/linearmodel.png)</center>
-
-<div>**Figure 1:** Bipartite graphical representation of a linear model. Parameters are represented by circles. Distributions are represented by grey rectangles. The independent variables $x_ {i}$ are drawn from a normally-distributed population with mean $\mu$ and standard deviation $\Sigma$. The dependent variables $y_ {i}=ax_ {i}+b$ have no intrinsic scatter. The measurements $\hat{x}_ {i}$ and $\hat{y}_ {i}$ are unbiased and normally distributed with standard deviation $\sigma$. The parameter under consideration $x_ {i}$ is shown in black. Its parents $N_ {x_ {i}}^{\mathrm{p}}=\left\\{ \mu,\Sigma\right\\} $ are shown in red; its siblings $N_ {x_ {i}}^{\mathrm{s}}=\left\\{ a,b\right\\} $ are shown in blue; its children $N_ {x_ {i}}^{\mathrm{c}}=\left\\{ \hat{x}_ {i}\hat{y}_ {i}\right\\} $ are shown in green.</div>
-
-</div>
+{% include figure.html url="/images/graphicalgibbs/linearmodel.png" description="**Figure 1:** Bipartite graphical representation of a linear model. Parameters are represented by circles. Distributions are represented by grey rectangles. The independent variables $x_ {i}$ are drawn from a normally-distributed population with mean $\mu$ and standard deviation $\Sigma$. The dependent variables $y_ {i}=ax_ {i}+b$ have no intrinsic scatter. The measurements $\hat{x}_ {i}$ and $\hat{y}_ {i}$ are unbiased and normally distributed with standard deviation $\sigma$. The parameter under consideration $x_ {i}$ is shown in black. Its parents $N_ {x_ {i}}^{\mathrm{p}}=\left\\{ \mu,\Sigma\right\\} $ are shown in red; its siblings $N_ {x_ {i}}^{\mathrm{s}}=\left\\{ a,b\right\\} $ are shown in blue; its children $N_ {x_ {i}}^{\mathrm{c}}=\left\\{ \hat{x}_ {i}\hat{y}_ {i}\right\\} $ are shown in green."}
 
 Focusing on a single parameter $\theta_ {i}\in\Theta$, we partition the parameters into disjoint sets 
 $$\Theta =\left\\{ \theta_ {i}\right\\} \cup N_ {i}\cup\bar{N}_ {i}. $$
