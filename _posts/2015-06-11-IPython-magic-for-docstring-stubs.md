@@ -7,4 +7,4 @@ Writing documentation for a project with consistent formatting is tedious and no
 
 To use the `magic`, simply drop the following file into your profile startup folder. On Linux or Mac OSX, the default startup directory is `~/.ipython/profile_default/startup/`, where `~` denotes your user directory.
 
-{ % gist 3da7abb296ca00c98d5a % }
+{% gist 3da7abb296ca00c98d5a %}
