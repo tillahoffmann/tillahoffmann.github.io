@@ -1,1 +1,1 @@
-# balticexpedition.github.io
+# Personal website of Till Hoffmann
