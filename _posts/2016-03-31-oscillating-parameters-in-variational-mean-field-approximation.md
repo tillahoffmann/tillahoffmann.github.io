@@ -12,7 +12,7 @@ $$
 y_i = \sum_{j=1}^p X_{ij} \theta_j + \epsilon_i,
 $$
 
-where $y$ is a length-$n$ vector of values we want to predict, $X$ is the $n\times p$ design matrix of $p$ covariates for each observation, $\theta$ are the unknown regression coefficients we need to determine, and $\epsilon_i$ is Gaussian noise. We assume that the noise precision $\tau$, i.e. the inverse variance, is known. Let's generate some data.
+where $y$ is a length-$n$ vector of values we want to predict, $X$ is the $n\times p$ design matrix of $p$ covariates for each observation, $\theta$ are the unknown regression coefficients we need to determine, and $\epsilon_i$ is Gaussian noise. We assume that the noise precision, i.e. the inverse variance, is equal to one. Let's generate some data.
 
 
 ```python
@@ -21,31 +21,16 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import rcParams
 rcParams['figure.figsize'] = (9, 6)
+# This module contains a few helper functions
+from linear_regression import *
 
+# Generate data and plot it
+X, y, theta = generate_data(theta=[1, 2])
+plot_data(X, y, theta)
 
-# Define the number of observations and the number of features
-n, p = 1000, 2
-# Define the noise precision $\tau$
-noise_precision = 1
-# Use a seed for reproducibility
-np.random.seed(1)
-
-# Generate a design matrix
-X = np.hstack([np.ones((n, 1)), np.random.normal(3, 1, (n, p - 1))])
-# Define regression coefficients
-theta = np.asarray([1, 2])
-# Generate observations
-y = np.dot(X, theta) + np.random.normal(0, 1, n) / np.sqrt(noise_precision)
-
-# Plot the synthetic data
-plt.scatter(X[:, 1], y, marker='.', alpha=.5)
-
-# Plot the underlying relationship
-x = np.linspace(np.min(X[:, 1]), np.max(X[:, 1]))
-plt.plot(x, theta[0] + theta[1] * x, color='r', lw=2)
-plt.ylabel('Observations')
-plt.xlabel('Covariates')
-pass
+# Use same starting position for all optimisers
+n, p = X.shape
+mu0 = np.random.normal(0, 1, p)
 ```
 
 
@@ -53,28 +38,28 @@ pass
 
 
 ## Mean-field variational inference
-The log-likelihood is
+The log-likelihood is (up to additive constants)
 
 $$\begin{align*}
-\log P(y\vert X\theta\tau)&= -\frac{n\log\tau}{2} - \frac{\tau}{2}\sum_{i=1}^n\left(y_i-\sum_{j=1}^pX_{ij}\theta_j\right)^2\\
-&= -\frac{n\log\tau}{2} - \frac{\tau}{2}\sum_{i=1}^n\left(y_i^2-2y_i\sum_{j=1}^pX_{ij}\theta_j +\sum_{j=k=1}^p X_{ij}\theta_jX_{ik}\theta_k\right).
+\log P(y\vert X\theta)&= - \frac 12\sum_{i=1}^n\left(y_i-\sum_{j=1}^pX_{ij}\theta_j\right)^2\\
+&= -\frac 12\sum_{i=1}^n\left(y_i^2-2y_i\sum_{j=1}^pX_{ij}\theta_j +\sum_{j=k=1}^p X_{ij}\theta_jX_{ik}\theta_k\right).
 \end{align*}$$
 
-We assume flat priors for the regression parameters $\theta$ such that the log-joint distribution $\log P(y\theta\vert X\tau)$ is equal to the log-likelihood up to an additive constant. 
+We assume flat priors for the regression parameters $\theta$ such that the log-joint distribution $\log P(y\theta\vert X)$ is equal to the log-likelihood up to an additive constant. 
 
-Using the mean-field approach, we approximate the true log-posterior $\log P(\theta\vert Xy\tau)$ by a sum of independent terms for each regression coefficient $\log Q(\theta)=\sum_{j=1}^p \log Q_j\left(\theta_j\right)$. The optimal factor for $\theta_j$ is
+Using the mean-field approach, we approximate the true log-posterior $\log P(\theta\vert Xy)$ by a sum of independent terms for each regression coefficient $\log Q(\theta)=\sum_{j=1}^p \log Q_j\left(\theta_j\right)$. The optimal factor for $\theta_j$ is
 
 $$
-\log Q^*_j\left(\theta_j\right)\doteq\left\langle\log P(y\theta\vert X\tau)\right\rangle_{k\neq j},
+\log Q^*_j\left(\theta_j\right)\doteq\left\langle\log P(y\theta\vert X)\right\rangle_{k\neq j},
 $$
 
 where the subscript $k\neq j$ indicates that the expectation is taken with respect to the posterior approximations $Q_k$ of all regression coefficients $k\neq j$, and $\doteq$ denotes equality up to an additive constant. Substituting the log-likelihood gives
 
 $$
-\log Q^*_j\left(\theta_j\right)\doteq -\frac \tau 2 \sum_{i=1}^n\left(X_{ij}^2\theta_j^2 - 2 \theta_j X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]\right)
+\log Q^*_j\left(\theta_j\right)\doteq -\frac 12 \sum_{i=1}^n\left(X_{ij}^2\theta_j^2 - 2 \theta_j X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]\right)
 $$
 
-such that the optimal factor $Q^*_j$ is a normal distribution with precision $\lambda_j=\tau\sum_{i=1}^nX_{ij}^2$ and mean $\mu_j=\lambda^{-1}_j\sum_{i=1}^n X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]$. The posterior mean $\mu_j$ agrees with intuition: the best parameter estimate must account for the observations after we have controlled for the effect of all the other covariates. Let's implement the mean-field inference and plot a trace of the parameter values.
+such that the optimal factor $Q^*_j$ is a normal distribution with precision $\lambda_j=\sum_{i=1}^nX_{ij}^2$ and mean $\mu_j=\lambda^{-1}_j\sum_{i=1}^n X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]$. The posterior mean $\mu_j$ agrees with intuition: the best parameter estimate must account for the observations after we have controlled for the effect of all the other covariates. Let's implement the mean-field inference and plot a trace of the parameter values.
 
 
 
@@ -84,7 +69,7 @@ def fit_mean_field(X, y, steps, mu=None):
     Fit a simple linear model using a variational mean-field approximation.
     """
     # First evaluate the precisions because they do not need to be updated
-    lmbda = noise_precision * np.sum(X ** 2, axis=0)
+    lmbda = np.sum(X ** 2, axis=0)
 
     # Initialise the parameter values to some random values unless they are provided
     if mu is None:
@@ -102,61 +87,17 @@ def fit_mean_field(X, y, steps, mu=None):
             # Store the current estimate
             mu_trace.append(np.copy(mu))
         
-    return np.asarray(mu_trace)
-
-
-def plot_trace(trace, reference=None, X=None, sigma=3, ax=None):
-    """
-    Plot a trace of parameter values.
-    """
-    ax = ax or plt.gca()
-    
-    # Iterate over all parameters
-    step = trace.shape[1]
-    for j, x in enumerate(np.transpose(trace[::step])):
-        # Plot the line
-        line, = ax.plot(x, marker='.')
-        # Plot the reference value
-        if reference is not None:
-            ax.axhline(reference[j], color=line.get_color(), ls=':')
-        # Plot the uncertainty
-        if X is not None:
-            err = np.sum(X[:, j] ** 2) ** -0.5
-            ax.fill_between(np.arange(len(x)), x - sigma * err, 
-                            x + sigma * err, color=line.get_color(), alpha=.2)
-        
-            
-
-def evaluate_elbo(mu, X, y):
-    """
-    Compute the evidence lower bound (discussed below).
-    """
-    lmbda = noise_precision * np.sum(X ** 2, axis=0)
-    predictor = np.dot(X, mu)
-    
-    return - 0.5 * len(X) * np.log(noise_precision) - 0.5 * noise_precision * (
-        np.dot(y, y) - 2 * np.dot(y, predictor) + np.dot(predictor, predictor) + np.sum(1.0 / lmbda))
+    return np.asarray(mu_trace)   
             
             
 # Generate a trace of parameter values
-mu0 = np.random.normal(0, 1, p)
-mu_trace = fit_mean_field(X, y, 50, mu0)
+trace = fit_mean_field(X, y, 50, mu0)
+# Evaluate the ELBO every p-steps
+elbos = np.asarray([evaluate_elbo(X, y, mu) for mu in trace[::p]])
 
 # Plot the trace
-fig, (ax1, ax2) = plt.subplots(1, 2, True)
-plot_trace(mu_trace, theta, X, ax=ax1)
-ax1.set_xlabel('Iteration')
-ax1.set_ylabel(r'$\mu$')
-
-# Plot the ELBO
-elbos = np.asarray([evaluate_elbo(mu, X, y) for mu in mu_trace[::p]])
-ax2.plot(elbos, color='r', marker='.')
-ax2.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-ax2.set_xlim(left=-1)
-ax2.set_ylabel('ELBO')
-ax2.set_xlabel('Iteration')
-
-fig.tight_layout()
+plot_trace(elbos, trace, theta, X)
+pass
 ```
 
 
@@ -167,19 +108,7 @@ What's happening? The initial parameter values are not far from the optimal valu
 
 
 ```python
-ax = plt.subplot(111)
-# Plot the trajectory
-ax.plot(mu_trace[:, 0], mu_trace[:, 1], marker='.')
-ax.set_xlabel(r'$\mu_1$')
-ax.set_ylabel(r'$\mu_2$')
-
-# Plot the energy landscape
-mu1 = np.linspace(*ax.get_xlim())
-mu2 = np.linspace(*ax.get_ylim())
-
-landscape = np.reshape([evaluate_elbo((_mu1, _mu2), X, y) for _mu1 in mu1 for _mu2 in mu2], (50, 50))
-ax.contour(mu1, mu2, landscape.T, levels=-np.logspace(4, 0, 50))
-pass
+plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 ```
 
 
@@ -197,24 +126,29 @@ Machine learning frameworks such as [theano](http://deeplearning.net/software/th
 Our objective is to maximise the ELBO, which is given by
 
 $$
-\mathcal{L}=\left\langle\log P(y\theta|X\tau)\right\rangle + H\left[Q\right],
+\mathcal{L}=\left\langle\log P(y\theta|X)\right\rangle + H\left[Q\right],
 $$
 
 where $H[Q]$ is the entropy of the approximate distribution. We know that the factors $Q_j$ are normal distributions with mean $\mu_j$ and precision $\lambda_j$ such that 
 
-$$\begin{align*}
-\mathcal{L}\left(\mu,\lambda\right)&=-\frac{n\log\tau}{2} - \frac{\tau}{2}\sum_{i=1}^n\left(y_i^2-2y_i\sum_{j=1}^pX_{ij}\mu_j +\sum_{j=k=1}^p X_{ij}\mu_jX_{ik}\mu_k + \sum_{j=k}^p X_{ij}^2 \lambda_j^{-1}\right) \\
-&\quad-\frac 12\sum_{j=1}^p\log\lambda_j+ \frac{p}{2}\log\left(2\pi\right).
-\end{align*}$$
+$$
+\mathcal{L}\left(\mu,\lambda\right)= - \frac 12\sum_{i=1}^n\left(y_i^2-2y_i\sum_{j=1}^pX_{ij}\mu_j +\sum_{j=k=1}^p X_{ij}\mu_jX_{ik}\mu_k + \sum_{j=1}^p X_{ij}^2 \lambda_j^{-1}\right)-\frac 12\sum_{j=1}^p\log\lambda_j.
+$$
 
 Setting the derivative of the ELBO with respect to $\lambda$ to zero, we find
 
 $$\begin{align*}
-\frac{\partial\mathcal{L}\left(\mu,\lambda\right)}{\partial\lambda_j}&=\frac\tau 2\sum_{i=1}^nX_{ij}^2\lambda^{-2}_j - \frac{\lambda_j^{-1}}{2}=0\\
-\therefore \lambda_j&=\tau\sum_{i=1}^n X_{ij}^2,
+\frac{\partial\mathcal{L}\left(\mu,\lambda\right)}{\partial\lambda_j}&=\frac 12\sum_{i=1}^nX_{ij}^2\lambda^{-2}_j - \frac{\lambda_j^{-1}}{2}=0\\
+\therefore \lambda_j&=\sum_{i=1}^n X_{ij}^2,
 \end{align*}$$
 
-which is the same expression we obtained using the mean-field update equations. The expressions for $\mu$ are more complicated and we will make use of theano to do the heavy lifting for us. We first define a call graph that evaluates the ELBO, and then use gradient ascent to find the maximum.
+which is the same expression we obtained using the mean-field update equations. Substitution yields an expression for the ELBO as a function of the parameters $\mu$ only
+
+$$
+\mathcal{L}\left(\mu\right)= - \frac 12\sum_{i=1}^n\left(\sum_{j=k=1}^p X_{ij}\mu_jX_{ik}\mu_k-2y_i\sum_{j=1}^pX_{ij}\mu_j\right).
+$$
+
+The derivatives for $\mu$ are more complicated and we will make use of theano to do the heavy lifting for us. We first define a call graph that evaluates the ELBO, and then use gradient ascent to find the maximum.
 
 
 ```python
@@ -223,26 +157,20 @@ import theano.tensor as T
 
 # Define symbolic variables
 t_X = T.matrix('X')
-t_theta = T.vector('theta')
+t_mu = T.vector('mu')
 t_y = T.vector('y')
 
-# Compute the values for lambda explicitly
-t_lmbda = T.sum(t_X ** 2, axis=0)
-
 # Evaluate the predictor
-t_predictor = T.dot(t_X, t_theta)
+t_predictor = T.dot(t_X, t_mu)
 
 # Evaluate the ELBO
-t_elbo = - n * np.log(noise_precision) / 2 - noise_precision * (
-    T.dot(t_y, t_y) - 2 * T.dot(t_y, t_predictor) + 
-    T.dot(t_predictor, t_predictor) + p) / 2 \
-    - T.sum(t_lmbda) / 2 + p * np.log(2 * np.pi) / 2
+t_elbo = -0.5 * T.dot(t_predictor, t_predictor) + T.dot(t_y, t_predictor)
     
 # Evaluate the gradient
-t_grad = theano.grad(t_elbo, t_theta)
+t_grad = theano.grad(t_elbo, t_mu)
     
 # Define a function that returns the objective and gradients
-objective = theano.function(inputs=[t_theta, t_X, t_y], outputs=[-t_elbo, -t_grad])
+objective = theano.function(inputs=[t_mu, t_X, t_y], outputs=[-t_elbo, -t_grad])
 ```
 
 
@@ -250,18 +178,13 @@ objective = theano.function(inputs=[t_theta, t_X, t_y], outputs=[-t_elbo, -t_gra
 from scipy import optimize
 
 # Minimize the objective function using standard scipy methods
-mu_trace = [mu0]
-result = optimize.minimize(objective, mu0, (X, y), 'cg', jac=True, callback=lambda x: mu_trace.append(x))
-mu_trace = np.asarray(mu_trace)
+trace = [mu0]
+result = optimize.minimize(objective, mu0, (X, y), 'cg', jac=True, 
+                           callback=lambda x: trace.append(x))
+trace = np.asarray(trace)
 
 # Plot the trajectory
-ax = plt.subplot(111)
-ax.plot(mu_trace[:, 0], mu_trace[:, 1], marker='.')
-ax.set_xlabel(r'$\mu_1$')
-ax.set_ylabel(r'$\mu_2$')
-
-ax.contour(mu1, mu2, landscape.T, levels=-np.logspace(4, 0, 50))
-pass
+plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 ```
 
 
