@@ -4,7 +4,7 @@ published: True
 ---
 
 
-[Variational Bayesian methods](https://en.wikipedia.org/wiki/Variational_Bayesian_methods) are a great way to get around the computational challenges usually associated with Bayesian inference. Because the posterior distributions are often difficult to evaluate, variational methods approximate the true posterior by a parametric distribution with known functional form. The inference algorithm is thus reduced to an optimisation problem whose objective is to tune the parameters of the approximate distribution such that the posterior is approximated well. Using the popular [mean-field](https://en.wikipedia.org/wiki/Variational_Bayesian_methods#In_practice) approximation, guarantees that the EM-like updates increase the evidence lower bound (ELBO) with every iteration. However, the values of the variational parameters can oscillate if they are strongly coupled by the posterior distribution. The resulting slow convergence is often not obvious from monitoring the ELBO. In this post, we illustrate the problem using a simple linear regression model, and consider alternatives that can help to fit Bayesian models using variational approximations.
+[Variational Bayesian methods](https://en.wikipedia.org/wiki/Variational_Bayesian_methods) are a great way to get around the computational challenges often associated with Bayesian inference. Because the posterior distribution is often difficult to evaluate, variational methods approximate the true posterior by a parametric distribution with known functional form. The inference algorithm is thus reduced to an optimisation problem whose objective is to tune the parameters of the approximate distribution to match the posterior. Using the popular [mean-field approximation](https://en.wikipedia.org/wiki/Variational_Bayesian_methods#In_practice), guarantees that the EM-like updates increase the evidence lower bound (ELBO) with every iteration. However, the values of the variational parameters can oscillate if they are strongly coupled by the posterior distribution. The resulting slow convergence is often not obvious from monitoring the ELBO. In this post, we illustrate the problem using a simple linear regression model, and consider alternatives that can help to fit Bayesian models using variational approximations.
 
 The standard linear regression problem is defined by
 
@@ -12,7 +12,7 @@ $$
 y_i = \sum_{j=1}^p X_{ij} \theta_j + \epsilon_i,
 $$
 
-where $y$ is a length-$n$ vector of values we want to predict, $X$ is the $n\times p$ design of $p$ covariates for each observation, $\theta$ are the unknown regression coefficients we need to determine, and $\epsilon_i$ is Gaussian noise. We assume that the noise precision $\tau$, i.e. the inverse variance, is known. Let's generate some data.
+where $y$ is a length-$n$ vector of values we want to predict, $X$ is the $n\times p$ design matrix of $p$ covariates for each observation, $\theta$ are the unknown regression coefficients we need to determine, and $\epsilon_i$ is Gaussian noise. We assume that the noise precision $\tau$, i.e. the inverse variance, is known. Let's generate some data.
 
 
 ```python
@@ -192,7 +192,7 @@ In models with thousands of parameters, these update rules lead to oscillations 
 
 ## Variational inference using machine learning frameworks
 
-Machine learning frameworks such as [theano](http://deeplearning.net/software/theano/) and [tensorflow](https://www.tensorflow.org/) are designed to let you define a function symbolically and find its extrema using gradient-based optimisation. The frameworks provide efficient methods for calculating gradients by using the same symbolic call graph that defined the objective function.
+Machine learning frameworks such as [theano](http://deeplearning.net/software/theano/) and [tensorflow](https://www.tensorflow.org/) are designed to let you define a function symbolically and find its extrema using gradient-based optimisation. The frameworks provide efficient methods for calculating gradients automatically.
 
 Our objective is to maximise the ELBO, which is given by
 
@@ -214,7 +214,7 @@ $$\begin{align*}
 \therefore \lambda_j&=\tau\sum_{i=1}^n X_{ij}^2,
 \end{align*}$$
 
-which is the same expression we obtained using the mean-field update equations. The expressions for $\mu$ are more complicated and we will make use of theano to do the heavy lifting for us. We will first define a call graph that evaluates the ELBO and then use gradient ascent to find the maximum.
+which is the same expression we obtained using the mean-field update equations. The expressions for $\mu$ are more complicated and we will make use of theano to do the heavy lifting for us. We first define a call graph that evaluates the ELBO, and then use gradient ascent to find the maximum.
 
 
 ```python
@@ -270,6 +270,6 @@ pass
 
 The gradient-based approach only takes two steps to reach the maximum using the [conjugate gradient method](https://en.wikipedia.org/wiki/Conjugate_gradient_method). 
 
-Although the theoretical guarantees provided by the mean-field update equations are appealing, the method can be slow in practice. The methods developed by the machine learning community are able to optimise functions of thousands of parameters, and statisticians should make use of these powerful tools.
+Although the theoretical guarantees provided by the mean-field update equations are appealing, the method can be slow in practice. The methods developed by the machine learning community are able to optimise functions of thousands of parameters, and we should make use of these powerful tools.
 
 {% include mathjax.html %}
