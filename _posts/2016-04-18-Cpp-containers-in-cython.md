@@ -199,7 +199,7 @@ pass
 ```
 
 
-![png](Cpp-containers-in-cython_files/Cpp-containers-in-cython_13_0.png)
+![png](/media/2016-04-18-Cpp-containers-in-cython/Cpp-containers-in-cython_12_0.png)
 
 
 Wow, most of the computational time is taken up by the overhead of calling the function and converting the results into a format that python can handle (rather than a C++ vector).
