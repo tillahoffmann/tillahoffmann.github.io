@@ -11,6 +11,7 @@ Let's generate a directed [Erdos-Renyi network](https://en.wikipedia.org/wiki/Er
 
 ```python
 %matplotlib inline
+%load_ext cython
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
@@ -60,11 +61,6 @@ adjacency_map[42]
 ## Using cython
 
 Sometimes the standard python code just doesn't perform well enough, and we want to make use of statically typed C++ code. The [`map`](http://www.cplusplus.com/reference/map/map/) container is the analogue of a dictionary in python. As usual, C++ is a bit more cumbersome. Here we go.
-
-
-```python
-%load_ext cython
-```
 
 
 ```python
@@ -203,7 +199,7 @@ pass
 ```
 
 
-![png](C%2B%2B-containers-in-cython_files/C%2B%2B-containers-in-cython_13_0.png)
+![png](Cpp-containers-in-cython_files/Cpp-containers-in-cython_13_0.png)
 
 
 Wow, most of the computational time is taken up by the overhead of calling the function and converting the results into a format that python can handle (rather than a C++ vector).
