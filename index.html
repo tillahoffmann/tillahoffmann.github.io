@@ -5,8 +5,10 @@ order: 0
 ---
 
 {% for post in site.posts %}
+{% unless post.hidden %}
 <div>
     <a href="{{ post.url }}"><h1>{{ post.title }}</h1></a>
     {{ post.excerpt }}
 </div>
+{% endunless %}
 {% endfor %}
