@@ -17,7 +17,7 @@ The time-dependent adjacency matrix has an interesting property: At a time $t'=t
 $$\begin{align*}
 A_{uv}(t_m+\Delta,\lambda)&=\sum_{n:t_n \leq t}\exp\left(-\lambda(t_m+\Delta-t_n)\right)\left(\delta_{ui_t}\delta_{vj_t} + \delta_{uj_t}\delta_{vi_t}\right)\\
 &=\exp\left(-\lambda \Delta\right)\sum_{n:t_n \leq t}\exp\left(-\lambda(t_m-t_n)\right)\left(\delta_{ui_t}\delta_{vj_t} + \delta_{uj_t}\delta_{vi_t}\right)\\
-&=\exp\left(-\lambda(t_m-t_n)\right)A_{uv}(t_m+\Delta,\lambda).
+&=\exp\left(-\lambda(t_m-t_n)\right)A_{uv}(t_m,\lambda).
 \end{align*}$$
 
 Suppose we want to perform community detection on the time-dependent adjacency by maximising the modularity. If the null model scales in the same manner as the adjacency matrix, the community assignments are fixed unless a new edge arrives. Consider the modularity given a vector of community assignments $c$
