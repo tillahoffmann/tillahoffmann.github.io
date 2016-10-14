@@ -63,7 +63,7 @@ adjacency_map[42]
 Sometimes the standard python code just doesn't perform well enough, and we want to make use of statically typed C++ code. The [`map`](http://www.cplusplus.com/reference/map/map/) container is the analogue of a dictionary in python. As usual, C++ is a bit more cumbersome. Here we go.
 
 
-```python
+```
 %%cython
 
 # distutils: language = c++
@@ -79,9 +79,10 @@ ctypedef cpp_map[int, cpp_neighbourhood] cpp_adjacency_map
 ctypedef cpp_pair[int, cpp_neighbourhood] cpp_item
 
 # Import a few operators because they aren't supported by cython syntax
-from cython.operator cimport dereference as deref, preincrement as preinc
+from cython.operator cimport dereference as deref
+from cython.operator cimport preincrement as preinc
 
-cdef class AdjacencyMap:
+class AdjacencyMap:
     cdef:
         cpp_adjacency_map container
         
