@@ -30,5 +30,5 @@ If you want to enable the filter globally, add the line above to `~/.gitattribut
 
 ```ini
 [core]
-    attributesfile = ~/attributesfile = .gitattributes
+    attributesfile = ~/.gitattributes
 ```
