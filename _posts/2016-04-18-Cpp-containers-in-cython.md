@@ -1,6 +1,7 @@
 ---
 layout: post
 published: True
+title: C++ Containers In Cython
 ---
 
 
@@ -85,21 +86,21 @@ from cython.operator cimport preincrement as preinc
 class AdjacencyMap:
     cdef:
         cpp_adjacency_map container
-        
+
     def __init__(self, int[:, :] adjacency_list):
         cdef:
             int i, ego, alter
             cpp_neighbourhood neighbourhood
-            
+
         # Iterate over all entries of the adjacency list
         for i in range(adjacency_list.shape[0]):
             ego = adjacency_list[i, 0]
             alter = adjacency_list[i, 1]
-            
-            # Check if the ego is already in the map 
+
+            # Check if the ego is already in the map
             # (see http://stackoverflow.com/a/101980/1150961 for details)
             lb = self.container.lower_bound(ego)
-            
+
             # Check if the key already exists
             if lb != self.container.end() and ego == deref(lb).first:
                 # Add the node to the pair
@@ -109,7 +110,7 @@ class AdjacencyMap:
                 neighbourhood = cpp_neighbourhood()
                 neighbourhood.push_back(alter)
                 self.container.insert(lb, cpp_item(ego, neighbourhood))
-                
+
     def get(self, int ego):
         """
         Get the neighbours of `ego` or `None` if `ego` isn't in the map.
@@ -127,9 +128,9 @@ class AdjacencyMap:
         while neighbourhood_iterator != neighbourhood.end():
             values.append(deref(neighbourhood_iterator))
             preinc(neighbourhood_iterator)
-            
+
         return values
-    
+
     def _get_many(self, int ego, int repeats):
         """
         Simple function to illustrate overhead.
@@ -180,7 +181,7 @@ times = []
 for repeat in repeats:
     result = %timeit -o -q -r 20 stl_adjacency_map._get_many(42, repeat)
     times.append(result)
-    
+
 # Extract times and convert to nanoseconds
 x = np.asarray([time.all_runs for time in times]) * 1e3
 # Compute mean and standard deviation
@@ -200,7 +201,7 @@ pass
 ```
 
 
-![png](/media/2016-04-18-Cpp-containers-in-cython/Cpp-containers-in-cython_12_0.png)
+![png](/assets/2016-04-18-Cpp-containers-in-cython/Cpp-containers-in-cython_12_0.png)
 
 
 Wow, most of the computational time is taken up by the overhead of calling the function and converting the results into a format that python can handle (rather than a C++ vector).

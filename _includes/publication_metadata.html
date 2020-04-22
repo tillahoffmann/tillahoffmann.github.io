@@ -1,0 +1,15 @@
+<span class="post-meta clearfix">
+{% assign publication = include.publication %}
+{% for key in publication.author %}
+    {% assign author = site.data.collaborators[key] %}
+    {%- if forloop.last %}and{%endif-%}
+    {%- if author.url %}<a href="{{author.url}}">{%endif-%}
+    <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-author h-card" itemprop="givenName">{{ author.first }}</span>
+        <span class="p-author h-card" itemprop="familyName">{{ author.last }}</span></span>
+    {%- if author.url %}</a>{%endif-%}{%- if forloop.last == false %}, {% endif -%}
+{% endfor %}
+in
+<a target="_blank" href="{% if publication.doi %}https://doi.org/{{publication.doi}}{%else%}{{publication.publication_url}}{%endif%}">
+<i>{{publication.venue}}</i></a>
+</span>

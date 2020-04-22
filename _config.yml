@@ -1,1 +1,15 @@
 url: http://tillahoffmann.github.io
+remote_theme: jekyll/minima@49f6dce0727a2441f0b0c265b41b5efc7b042eb6
+title: Till Hoffmann
+show_excerpts: true
+header_pages:
+  - index.md
+  - blog.md
+  - about.md
+
+minima:
+  social_links:
+    twitter: tillahoffmann
+    github: tillahoffmann
+    linkedin: tillahoffmann
+    scholar: 0VvYpCsAAAAJ

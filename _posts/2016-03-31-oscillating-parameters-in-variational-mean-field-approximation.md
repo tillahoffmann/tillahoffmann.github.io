@@ -34,7 +34,7 @@ mu0 = np.random.normal(0, 1, p)
 ```
 
 
-![png](/media/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_1_0.png)
+![png](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_1_0.png)
 
 
 ## Mean-field variational inference
@@ -45,7 +45,7 @@ $$\begin{align*}
 &= -\frac 12\sum_{i=1}^n\left(y_i^2-2y_i\sum_{j=1}^pX_{ij}\theta_j +\sum_{j=k=1}^p X_{ij}\theta_jX_{ik}\theta_k\right).
 \end{align*}$$
 
-We assume flat priors for the regression parameters $\theta$ such that the log-joint distribution $\log P(y\theta\vert X)$ is equal to the log-likelihood up to an additive constant. 
+We assume flat priors for the regression parameters $\theta$ such that the log-joint distribution $\log P(y\theta\vert X)$ is equal to the log-likelihood up to an additive constant.
 
 Using the mean-field approach, we approximate the true log-posterior $\log P(\theta\vert Xy)$ by a sum of independent terms for each regression coefficient $\log Q(\theta)=\sum_{j=1}^p \log Q_j\left(\theta_j\right)$. The optimal factor for $\theta_j$ is
 
@@ -86,10 +86,10 @@ def fit_mean_field(X, y, steps, mu=None):
             mu[j] = np.dot(X[:, j], y - np.dot(X, mu) + X[:, j] * mu[j]) / lmbda[j]
             # Store the current estimate
             mu_trace.append(np.copy(mu))
-        
-    return np.asarray(mu_trace)   
-            
-            
+
+    return np.asarray(mu_trace)
+
+
 # Generate a trace of parameter values
 trace = fit_mean_field(X, y, 50, mu0)
 # Evaluate the ELBO every p-steps
@@ -101,7 +101,7 @@ pass
 ```
 
 
-![png](/media/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_3_0.png)
+![png](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_3_0.png)
 
 
 What's happening? The initial parameter values are not far from the optimal values but they shoot off to strange values before returning to the true parameter values. This isn't a problem for our small example but can be problematic for larger models. The reason behind this strange behaviour becomes apparent when we consider the trajectory of the parameters $\mu$. Let's have a look.
@@ -112,10 +112,10 @@ plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 ```
 
 
-![png](/media/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_5_0.png)
+![png](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_5_0.png)
 
 
-The algorithm updates each parameter in turn similar to [coordinate descent](https://en.wikipedia.org/wiki/Coordinate_descent). Because it updates $\mu_1$ first, it takes a step to a location far from the optimal parameter value for $\mu_2$. The algorithm subsequently walks up the ELBO mountain until it reaches the maximum. 
+The algorithm updates each parameter in turn similar to [coordinate descent](https://en.wikipedia.org/wiki/Coordinate_descent). Because it updates $\mu_1$ first, it takes a step to a location far from the optimal parameter value for $\mu_2$. The algorithm subsequently walks up the ELBO mountain until it reaches the maximum.
 
 In models with thousands of parameters, these update rules lead to oscillations which can persist for a long time. Can we do better?
 
@@ -129,7 +129,7 @@ $$
 \mathcal{L}=\left\langle\log P(y\theta|X)\right\rangle + H\left[Q\right],
 $$
 
-where $H[Q]$ is the entropy of the approximate distribution. We know that the factors $Q_j$ are normal distributions with mean $\mu_j$ and precision $\lambda_j$ such that 
+where $H[Q]$ is the entropy of the approximate distribution. We know that the factors $Q_j$ are normal distributions with mean $\mu_j$ and precision $\lambda_j$ such that
 
 $$
 \mathcal{L}\left(\mu,\lambda\right)= - \frac 12\sum_{i=1}^n\left(y_i^2-2y_i\sum_{j=1}^pX_{ij}\mu_j +\sum_{j=k=1}^p X_{ij}\mu_jX_{ik}\mu_k + \sum_{j=1}^p X_{ij}^2 \lambda_j^{-1}\right)-\frac 12\sum_{j=1}^p\log\lambda_j.
@@ -165,10 +165,10 @@ t_predictor = T.dot(t_X, t_mu)
 
 # Evaluate the ELBO
 t_elbo = -0.5 * T.dot(t_predictor, t_predictor) + T.dot(t_y, t_predictor)
-    
+
 # Evaluate the gradient
 t_grad = theano.grad(t_elbo, t_mu)
-    
+
 # Define a function that returns the objective and gradients
 objective = theano.function(inputs=[t_mu, t_X, t_y], outputs=[-t_elbo, -t_grad])
 ```
@@ -179,7 +179,7 @@ from scipy import optimize
 
 # Minimize the objective function using standard scipy methods
 trace = [mu0]
-result = optimize.minimize(objective, mu0, (X, y), 'cg', jac=True, 
+result = optimize.minimize(objective, mu0, (X, y), 'cg', jac=True,
                            callback=lambda x: trace.append(x))
 trace = np.asarray(trace)
 
@@ -188,10 +188,10 @@ plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 ```
 
 
-![png](/media/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_9_0.png)
+![png](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_9_0.png)
 
 
-The gradient-based approach only takes two steps to reach the maximum using the [conjugate gradient method](https://en.wikipedia.org/wiki/Conjugate_gradient_method). 
+The gradient-based approach only takes two steps to reach the maximum using the [conjugate gradient method](https://en.wikipedia.org/wiki/Conjugate_gradient_method).
 
 Although the theoretical guarantees provided by the mean-field update equations are appealing, the method can be slow in practice. The methods developed by the machine learning community are able to optimise functions of thousands of parameters, and we should make use of these powerful tools.
 

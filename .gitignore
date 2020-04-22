@@ -6,3 +6,4 @@ _site
 .ipynb_checkpoints/
 *.pyc
 .vscode
+_playground/

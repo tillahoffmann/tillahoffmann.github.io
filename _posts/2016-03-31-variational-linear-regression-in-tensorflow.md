@@ -28,7 +28,7 @@ mu0 = np.random.normal(0, 1, p)
 ```
 
 
-![png](/media/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_1_0.png)
+![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_1_0.png)
 
 
 Recall that the evidence lower bound (ELBO) is given by
@@ -54,7 +54,7 @@ with tf.Graph().as_default() as graph:
 
     # Compute the elbo
     t_elbo = -0.5 * tf.reduce_sum(t_predictor ** 2) + tf.reduce_sum(t_predictor * t_y)
-    
+
     # Create an optimiser
     optimizer = tf.train.MomentumOptimizer(1e-2 / n, .3)
     train_step = optimizer.minimize(-t_elbo)
@@ -68,7 +68,7 @@ with tf.Graph().as_default() as graph:
 with tf.Session(graph=graph) as sess:
     # Initialise variables
     sess.run(tf.initialize_all_variables())
-    
+
     # Run the optimisation
     trace = []
     elbos = []
@@ -77,13 +77,13 @@ with tf.Session(graph=graph) as sess:
         _, mu, elbo = sess.run([train_step, t_mu, t_elbo], {t_X: X, t_y: y})
         trace.append(mu)
         elbos.append(elbo)
-    
+
 plot_trace(elbos, trace, theta)
 pass
 ```
 
 
-![png](/media/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_5_0.png)
+![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_5_0.png)
 
 
 Let's plot the trajectory of the optimisation through parameter space.
@@ -94,7 +94,7 @@ plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 ```
 
 
-![png](/media/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_7_0.png)
+![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_7_0.png)
 
 
 `tensorflow` and `theano` are very similar packages and are both aimed at large-scale machine learning. `tensorflow` still has a bunch of annoying pecularities (such as missing a standard implementation of the dot product), but promises to develop into a great product. It also provides a range of optimisers out of the box. `theano` is somewhat faster and more stable but optimisation is sometimes tedious because optimisers are not provided.

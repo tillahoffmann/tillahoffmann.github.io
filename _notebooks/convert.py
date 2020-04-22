@@ -33,7 +33,7 @@ with open(notebook_name + '.md') as fp:
 support = notebook_name + '_files'
 
 # Replace all references to the support files
-markdown = markdown.replace(support + '/', '/media/' + post_name + '/')
+markdown = markdown.replace(support + '/', '/assets/' + post_name + '/')
 
 front_matter = {
     'layout': args.layout,
@@ -60,7 +60,7 @@ with open(output, 'w') as fp:
 call(['rm', notebook_name + '.md'])
 
 # Delete the support directory
-media_dir = '../media/' + post_name
+media_dir = '../assets/' + post_name
 if path.exists(media_dir):
     call(['rm', '-r', media_dir])
 
