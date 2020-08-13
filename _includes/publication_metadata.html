@@ -7,7 +7,7 @@
     <span itemprop="author" itemscope itemtype="http://schema.org/Person">
         <span class="p-author h-card" itemprop="givenName">{{ author.first }}</span>
         <span class="p-author h-card" itemprop="familyName">{{ author.last }}</span></span>
-    {%- if author.url %}</a>{%endif-%}{%- if forloop.last == false %}, {% endif -%}
+    {%- if author.url %}</a>{%endif-%}{%- if forloop.last == false and publication.author.size > 2 %}, {% endif -%}
 {% endfor %}
 in
 <a target="_blank" href="{% if publication.doi %}https://doi.org/{{publication.doi}}{%else%}{{publication.publication_url}}{%endif%}">

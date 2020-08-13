@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Publications
+title: Blog
 ---
 
 <style>
@@ -13,21 +13,21 @@ title: Publications
 
 {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
 <ul class="post-list">
-  {% for publication in site.posts %}
-  {% if publication.layout == 'publication' %}
+  {% for post in site.posts %}
   <li class="clearfix">
-  <span class="post-meta">{{ publication.date | date: date_format }}</span>
-  <h3 style="margin-bottom: 0;">
-    <a class="post-link" href="{{ publication.url | relative_url }}">
-    {{ publication.title | escape }}
-    </a>
-  </h3>
-  {% include publication_metadata.html citation=publication.citation %}
-  {% if publication.thumbnail %}
-  <img src="{{publication.thumbnail}}" style="float: left; max-width: 25%; margin-right: 1em;"/>
-  {% endif %}
-  {{ publication.excerpt }}
-</li>
-{%endif%}
+    <span class="post-meta">{{ post.date | date: date_format }}</span>
+    <h3 style="margin-bottom: 0;">
+      <a class="post-link" href="{{ post.url | relative_url }}">
+      {{ post.title | escape }}
+      </a>
+    </h3>
+    {% if post.layout == 'publication' %}
+      {% include publication_metadata.html publication=post %}
+    {%endif%}
+    {% if post.thumbnail %}
+      <img src="{{post.thumbnail}}" style="float: left; max-width: 25%; margin-right: 1em;"/>
+    {% endif %}
+    {{ post.excerpt }}
+  </li>
 {%- endfor -%}
 </ul>

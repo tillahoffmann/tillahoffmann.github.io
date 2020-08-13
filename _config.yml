@@ -4,7 +4,6 @@ title: Till Hoffmann
 show_excerpts: true
 header_pages:
   - index.md
-  - blog.md
   - about.md
 
 minima:
