@@ -31,3 +31,5 @@ title: Blog
   </li>
 {%- endfor -%}
 </ul>
+
+{% include mathjax.html %}
