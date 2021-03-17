@@ -195,5 +195,3 @@ plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 The gradient-based approach only takes two steps to reach the maximum using the [conjugate gradient method](https://en.wikipedia.org/wiki/Conjugate_gradient_method).
 
 Although the theoretical guarantees provided by the mean-field update equations are appealing, the method can be slow in practice. The methods developed by the machine learning community are able to optimise functions of thousands of parameters, and we should make use of these powerful tools.
-
-{% include mathjax.html %}

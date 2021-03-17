@@ -99,5 +99,3 @@ plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 
 
 `tensorflow` and `theano` are very similar packages and are both aimed at large-scale machine learning. `tensorflow` still has a bunch of annoying pecularities (such as missing a standard implementation of the dot product), but promises to develop into a great product. It also provides a range of optimisers out of the box. `theano` is somewhat faster and more stable but optimisation is sometimes tedious because optimisers are not provided.
-
-{% include mathjax.html %}

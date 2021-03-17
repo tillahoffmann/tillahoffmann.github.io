@@ -208,5 +208,3 @@ pass
 Wow, most of the computational time is taken up by the overhead of calling the function and converting the results into a format that python can handle (rather than a C++ vector).
 
 In short, if you only want to look stuff up in a dictionary, don't bother implementing a wrapper for the STL. However, if you intend to do a lot of processing in cython, you can get enormous performance gains by putting in the effort to use statically typed containers.
-
-{% include mathjax.html %}

@@ -29,5 +29,3 @@ Q(t,\lambda)&=\frac{1}{2m(t,\lambda)}\sum_{uv}\left[A_{uv}(t,\lambda)-\frac{k_u(
 \end{align*}$$
 
 Multiplying the adjacency matrix by a constant leaves the modularity unchanged because $m$ and $k$ are scaled by the same constant. Consequently, it is sufficient to optimize the modularity after every arrival of a new edge to know the community assignments at all times.
-
-{% include mathjax.html %}
