@@ -28,6 +28,15 @@ $table-border-color:    $border-color-01 !default;
     border-top: solid 5px $brand-color !important;
 }
 
+.social-media-list a {
+    border: 1px solid gray !important;
+    border-radius: 3px;
+}
+
+.footer-col-wrapper {
+    display: none !important;
+}
+
 // Syntax highlighting styles should be adjusted appropriately for every "skin"
 // ----------------------------------------------------------------------------
 
