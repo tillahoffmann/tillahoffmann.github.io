@@ -8,7 +8,7 @@ doi: 10.1002/essoar.10510612.2
 author:
   - me
   - sbunney
-  - bkapsrzykhordern
+  - bkasprzykhordern
   - asinger
 ---
 
