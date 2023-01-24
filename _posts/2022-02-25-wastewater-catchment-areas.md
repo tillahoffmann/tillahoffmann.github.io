@@ -1,7 +1,7 @@
 ---
 layout: publication
 title: Wastewater catchment areas in Great Britain
-thumbnail: /assets/2021-02-25-wastewater-catchment-areas.png
+thumbnail: /assets/2022-02-25-wastewater-catchment-areas.png
 type: article
 venue: ESSOAr
 doi: 10.1002/essoar.10510612.2
