@@ -5,6 +5,7 @@ show_excerpts: true
 header_pages:
   - index.md
   - about.md
+repository: tillahoffmann/tillahoffmann.github.io
 
 minima:
   social_links:
