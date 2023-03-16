@@ -34,9 +34,12 @@ title: Blog
       {% if post.layout == 'publication' %}
         {% include publication_metadata.html publication=post %}
       {%endif%}
-      {% if post.thumbnail %}
-        <img src="{{post.thumbnail}}" style="float: left; max-width: 25%; margin-right: 1em;"/>
-      {% endif %}
+      {% assign thumbnail = post.path | split: "/" | last | replace: ".md", "/thumbnail.png" | prepend: "/assets/" %}
+      {% for static_file in site.static_files %}
+        {% if static_file.path == thumbnail %}
+          <img src="{{static_file.path}}" style="float: left; max-width: 40%; margin-right: 1em"/>
+        {% endif %}
+      {% endfor %}
       {%- if site.show_excerpts -%}
         {{ post.excerpt }}
       {%- endif -%}

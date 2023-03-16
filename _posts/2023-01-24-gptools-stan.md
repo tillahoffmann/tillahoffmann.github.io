@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Scalable Gaussian process inference with Stan
-thumbnail: /assets/2023-01-24-gptools-stan.png
 type: article
 venue: arXiv
 doi: 10.48550/arXiv.2301.08836

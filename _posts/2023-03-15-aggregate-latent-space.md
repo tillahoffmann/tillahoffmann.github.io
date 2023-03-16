@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Latent space approaches to aggregate network data
-thumbnail: /assets/2023-03-15-aggregate-latent-space.png
 type: article
 venue: arXiv
 doi: 10.48550/arXiv.2303.08338

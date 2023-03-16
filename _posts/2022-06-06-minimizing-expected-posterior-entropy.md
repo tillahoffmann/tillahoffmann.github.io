@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Minimizing the Expected Posterior Entropy Yields Optimal Summary Statistics
-thumbnail: /assets/2021-06-26-minimizing-expected-posterior-entropy.jpeg
 type: article
 venue: arXiv
 doi: 10.48550/arXiv.2206.02340

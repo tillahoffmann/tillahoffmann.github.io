@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Faecal shedding models for SARS-CoV-2 RNA amongst hospitalised patients and implications for wastewater-based epidemiology
-thumbnail: /assets/2021-03-17-faecal-shedding-models.png
 type: article
 venue: medRxiv
 doi: 10.1101/2021.03.16.21253603

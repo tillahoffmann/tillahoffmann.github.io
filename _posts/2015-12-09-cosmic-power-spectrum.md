@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Hierarchical Cosmic Shear Power Spectrum Inference
-thumbnail: /assets/2015-12-09-cosmic-power-spectrum.png
 type: article
 venue: Monthly Notices of the Royal Astronomical Society
 doi: 10.1093/mnras/stv2501

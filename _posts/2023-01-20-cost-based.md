@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Cost-based Feature Selection for Network Model Choice
-thumbnail: /assets/2023-01-20-cost-based.png
 type: article
 venue: Journal of Computational and Graphical Statistics
 doi: 10.1080/10618600.2022.2151453

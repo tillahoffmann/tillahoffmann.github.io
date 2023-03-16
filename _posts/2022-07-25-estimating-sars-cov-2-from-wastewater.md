@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: "An analysis of 45 large-scale wastewater sites in England to estimate SARS-CoV-2 community prevalence"
-thumbnail: /assets/2021-08-02-estimating-sars-cov-2-from-wastewater.png
 type: article
 author:
   - mmorvan

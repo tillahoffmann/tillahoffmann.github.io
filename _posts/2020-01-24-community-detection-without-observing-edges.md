@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Community Detection In Networks Without Observing Edges
-thumbnail: /assets/2020-01-24-community-detection-without-observing-edges.jpg
 type: article
 venue: Science Advances
 volume: 6

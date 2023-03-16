@@ -1,7 +1,6 @@
 ---
 layout: post
 published: True
-thumbnail: /assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/oscillating-parameters-in-variational-mean-field-approximation_5_0.png
 ---
 
 

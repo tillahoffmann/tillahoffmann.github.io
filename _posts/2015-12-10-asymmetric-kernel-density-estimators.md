@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Unified Treatment Of The Asymptotics Of Asymmetric Kernel Density Estimators
-thumbnail: /assets/2015-12-10-asymmetric-kernel-density-estimators.jpg
 type: article
 venue: arXiv
 pages: 1512.03188

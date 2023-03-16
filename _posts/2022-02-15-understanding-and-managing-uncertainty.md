@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: "Understanding and managing uncertainty and variability for wastewater monitoring beyond the pandemic: Lessons learned from the United Kingdom national COVID-19 surveillance programmes"
-thumbnail: /assets/2022-02-15-understanding-and-managing-uncertainty.jpg
 type: article
 author:
   - mwade

@@ -2,7 +2,6 @@
 layout: post
 published: True
 title: C++ Containers In Cython
-thumbnail: /assets/2016-04-18-Cpp-containers-in-cython/Cpp-containers-in-cython_12_0.png
 ---
 
 

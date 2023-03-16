@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Precision Identification Of High-Risk Phenotypes And Progression Pathways In Severe Malaria Without Requiring Longitudinal Data
-thumbnail: /assets/2019-07-10-high-risk-phenotypes-in-severe-malaria.jpg
 type: article
 venue: npj Digital Medicine
 doi: 10.1038/s41746-019-0140-y

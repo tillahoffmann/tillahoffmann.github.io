@@ -1,7 +1,6 @@
 ---
 layout: post
 published: True
-thumbnail: /assets/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_7_0.png
 ---
 
 

@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Decentralized Routing On Spatial Networks With Stochastic Edge Weights
-thumbnail: /assets/2013-08-27-decentralized-routing.png
 type: article
 venue: Physical Review E
 volume: 8

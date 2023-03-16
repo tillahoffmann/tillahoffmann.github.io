@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Inference of a universal social scale and segregation measures using social connectivity kernels
-thumbnail: /assets/2020-08-13-social-kernels.jpg
 type: article
 venue: Journal of the Royal Society Interface
 volume: 17

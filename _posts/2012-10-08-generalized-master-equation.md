@@ -1,7 +1,6 @@
 ---
 layout: publication
 title: Generalized Master Equations For Non-Poisson Dynamics On Networks
-thumbnail: /assets/2012-10-08-generalized-master-equation.png
 type: article
 author:
   - me
