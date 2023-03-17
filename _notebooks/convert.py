@@ -1,69 +1,29 @@
-from subprocess import call
 from argparse import ArgumentParser
-from datetime import datetime
-from os import path
+from pathlib import Path
+import shutil
+from subprocess import call
+
 
 # Get arguments
-ap = ArgumentParser('convert')
-ap.add_argument("--date", type=lambda x: datetime.strptime(x, "%Y-%m-%d"))
-ap.add_argument("--layout", default="post")
-ap.add_argument("--title")
-ap.add_argument("--published", default=True, type=bool)
-ap.add_argument("--mathjax", default=True, type=bool)
-ap.add_argument("notebook")
+ap = ArgumentParser("convert")
+ap.add_argument("notebook", help="notebook to convert", type=Path)
 args = ap.parse_args()
 
-# Call the converter in the local directory (nbconvert seems to struggle with a specified output directory)
-call(['jupyter', 'nbconvert', '--to', 'markdown', args.notebook])
+# Call the converter.
+call(["jupyter", "nbconvert", "--to", "markdown", "--output-dir=_posts", args.notebook])
 
-# Get the name of the notebook
-notebook_name, ext = path.splitext(args.notebook)
+# Get the name of the notebook, markdown path, and markdown text.
+name = args.notebook.with_suffix("").name
+markdown_path = Path("_posts", f"{name}.md")
+markdown = markdown_path.read_text()
 
-# Get the date for the post (use the creation date by default)
-date = args.date or datetime.fromtimestamp(path.getctime(args.notebook))
+# Move the assets.
+file_prefix = f"{name}_files"
+asset_directory = Path(f"assets/{name}")
+if asset_directory.is_dir():
+    shutil.rmtree(asset_directory)
+Path("_posts", file_prefix).rename(asset_directory)
 
-# Get the name of the newly created post
-post_name = "{:%Y-%m-%d}-{}".format(date, notebook_name)
-
-# Get the original markdown
-with open(notebook_name + '.md') as fp:
-    markdown = fp.read()
-
-# Determine the name of the support file directory
-support = notebook_name + '_files'
-
-# Replace all references to the support files
-markdown = markdown.replace(support + '/', '/assets/' + post_name + '/')
-
-front_matter = {
-    'layout': args.layout,
-    'published': args.published,
-}
-if args.title:
-    front_matter['title'] = args.title
-
-content = ['---']
-content.extend(["{}: {}".format(*item) for item in front_matter.iteritems()])
-content.extend(['---', ''])
-
-content.append(markdown)
-
-if args.mathjax:
-    content.append('{% include mathjax.html %}')
-
-# Save it to the output directory
-output = "../_posts/{}.md".format(post_name)
-with open(output, 'w') as fp:
-    fp.write('\n'.join(content))
-
-# Delete the original files
-call(['rm', notebook_name + '.md'])
-
-# Delete the support directory
-media_dir = '../assets/' + post_name
-if path.exists(media_dir):
-    call(['rm', '-r', media_dir])
-
-if path.exists(support):
-    # Move the support files to the media directory
-    call(['mv', support, media_dir])
+# Determine the name of the support file directory, replace all instances, and save.
+markdown = markdown.replace(file_prefix, f"/assets/{name}")
+markdown_path.write_text(markdown)

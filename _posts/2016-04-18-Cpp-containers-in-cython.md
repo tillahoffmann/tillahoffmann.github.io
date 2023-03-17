@@ -1,10 +1,6 @@
 ---
-layout: post
-published: True
-title: C++ Containers In Cython
+layout: default
 ---
-
-
 Cython's [typed memoryviews](http://docs.cython.org/src/userguide/memoryviews.html) provide a great interface for rectangular arrays. But I often need to represent jagged arrays such as the neighbours of nodes in a network. The standard python `dict` can represent such data nicely but is not statically typed. It can thus be quite slow compared with the templated containers in the C++ standard library. In this post, we'll have a look at how to use the power of the STL via cython.
 
 Let's generate a directed [Erdos-Renyi network](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model) and represent it as an adjacency list.
@@ -64,7 +60,7 @@ adjacency_map[42]
 Sometimes the standard python code just doesn't perform well enough, and we want to make use of statically typed C++ code. The [`map`](http://www.cplusplus.com/reference/map/map/) container is the analogue of a dictionary in python. As usual, C++ is a bit more cumbersome. Here we go.
 
 
-```
+```cython
 %%cython
 
 # distutils: language = c++
@@ -80,10 +76,9 @@ ctypedef cpp_map[int, cpp_neighbourhood] cpp_adjacency_map
 ctypedef cpp_pair[int, cpp_neighbourhood] cpp_item
 
 # Import a few operators because they aren't supported by cython syntax
-from cython.operator cimport dereference as deref
-from cython.operator cimport preincrement as preinc
+from cython.operator cimport dereference as deref, preincrement as preinc
 
-class AdjacencyMap:
+cdef class AdjacencyMap:
     cdef:
         cpp_adjacency_map container
 
@@ -131,14 +126,14 @@ class AdjacencyMap:
 
         return values
 
-    def _get_many(self, int ego, int repeats):
+    def _get_many(self, int[:] egos):
         """
         Simple function to illustrate overhead.
         """
         cdef int i
         # Try to find the ego a large number of times
-        for i in range(repeats):
-            iterator = self.container.find(ego)
+        for i in range(egos.shape[0]):
+            iterator = self.container.find(egos[i])
 ```
 
 
@@ -164,10 +159,10 @@ Let's compare the two implementations in terms of performance.
 %timeit stl_adjacency_map.get(42)
 ```
 
-    The slowest run took 18.23 times longer than the fastest. This could mean that an intermediate result is being cached.
-    100000 loops, best of 3: 1.65 µs per loop
-    The slowest run took 5.94 times longer than the fastest. This could mean that an intermediate result is being cached.
-    1000000 loops, best of 3: 682 ns per loop
+    The slowest run took 31.22 times longer than the fastest. This could mean that an intermediate result is being cached.
+    1000000 loops, best of 3: 1.63 µs per loop
+    The slowest run took 5.81 times longer than the fastest. This could mean that an intermediate result is being cached.
+    1000000 loops, best of 3: 656 ns per loop
 
 
 Ok, the complex implementation is a bit faster than the standard python implementation but it really doesn't seem worth the effort. It turns out the largest performance cost is the overhead from calling the C++ function from python. If we just want to look up neighbours in the C++ code, it's super fast. The class above has a simple function `_get_many` to illustrate this effect: it looks up the neighbours of a particular node a large number of times such that we can tease out how much the performance depends on the overhead.
@@ -176,20 +171,46 @@ Ok, the complex implementation is a bit faster than the standard python implemen
 ```python
 # The number of repetitions to perform
 repeats = [1, 10, 100, 1000, 10000]
-times = []
+cpp_times = []
 # Use the timeit module to figure out how long it takes to call the function
 for repeat in repeats:
-    result = %timeit -o -q -r 20 stl_adjacency_map._get_many(42, repeat)
-    times.append(result)
+    egos = np.random.randint(n, size=repeat).astype(np.int32)
+    result = %timeit -o -q -r 20 stl_adjacency_map._get_many(egos)
+    cpp_times.append(result)
+```
+
+
+```python
+# Do the same for python
+def _get_many(egos):
+    for ego in egos:
+        adjacency_map.get(ego)
+
+python_times = []
+# Use the timeit module to figure out how long it takes to call the function
+for repeat in repeats:
+    egos = np.random.randint(n, size=repeat)
+    result = %timeit -o -q -r 20 _get_many(egos)
+    python_times.append(result)
+```
+
+
+```python
+# Extract times and convert to nanoseconds
+cpp = np.asarray([time.all_runs for time in cpp_times]) * 1e3
+# Compute mean and standard deviation
+cpp_mean = np.mean(cpp, axis=1) / repeats
+cpp_std = np.std(cpp, axis=1) / repeats
 
 # Extract times and convert to nanoseconds
-x = np.asarray([time.all_runs for time in times]) * 1e3
+python = np.asarray([time.all_runs for time in python_times]) * 1e3
 # Compute mean and standard deviation
-mean = np.mean(x, axis=1) / repeats
-std = np.std(x, axis=1) / repeats
+python_mean = np.mean(python, axis=1) / repeats
+python_std = np.std(python, axis=1) / repeats
 
 # Show two standard deviations
-plt.errorbar(repeats, mean, 2 * std, marker='.')
+plt.errorbar(repeats, cpp_mean, 2 * cpp_std, marker='.', label='C++')
+plt.errorbar(repeats, python_mean, 2 * python_std, marker='.', label='python')
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('Number of repetitions')
@@ -201,7 +222,9 @@ pass
 ```
 
 
-![png](/assets/2016-04-18-Cpp-containers-in-cython/Cpp-containers-in-cython_12_0.png)
+
+![png](/assets/2016-04-18-Cpp-containers-in-cython/2016-04-18-Cpp-containers-in-cython_15_0.png)
+
 
 
 Wow, most of the computational time is taken up by the overhead of calling the function and converting the results into a format that python can handle (rather than a C++ vector).

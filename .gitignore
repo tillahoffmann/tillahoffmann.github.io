@@ -4,7 +4,6 @@ _site
 *.*~
 .idea/
 .ipynb_checkpoints/
-*.ipynb
 *.pyc
 .vscode
 _playground/

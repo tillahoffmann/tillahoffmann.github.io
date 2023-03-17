@@ -1,9 +1,6 @@
 ---
-layout: post
-published: True
+layout: default
 ---
-
-
 We discussed some of the problems with the variational mean-field optimisation algorithms in a previous [post]({% post_url 2016-03-31-oscillating-parameters-in-variational-mean-field-approximation %}), and showed that the optimisation problem can be solved using the machine learning library `theano`. Let's try to do the same using `tensorflow`, which provides a nice optimisation interface.
 
 Here are some simulated data.
@@ -28,7 +25,9 @@ mu0 = np.random.normal(0, 1, p)
 ```
 
 
-![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_1_0.png)
+
+![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/2016-03-31-variational-linear-regression-in-tensorflow_2_0.png)
+
 
 
 Recall that the evidence lower bound (ELBO) is given by
@@ -83,7 +82,9 @@ pass
 ```
 
 
-![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_5_0.png)
+
+![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/2016-03-31-variational-linear-regression-in-tensorflow_6_0.png)
+
 
 
 Let's plot the trajectory of the optimisation through parameter space.
@@ -94,7 +95,9 @@ plot_trajectory(X, y, trace, theta, levels=np.logspace(4, 4.45, 20))
 ```
 
 
-![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/variational-linear-regression-in-tensorflow_7_0.png)
+
+![png](/assets/2016-03-31-variational-linear-regression-in-tensorflow/2016-03-31-variational-linear-regression-in-tensorflow_8_0.png)
+
 
 
 `tensorflow` and `theano` are very similar packages and are both aimed at large-scale machine learning. `tensorflow` still has a bunch of annoying pecularities (such as missing a standard implementation of the dot product), but promises to develop into a great product. It also provides a range of optimisers out of the box. `theano` is somewhat faster and more stable but optimisation is sometimes tedious because optimisers are not provided.

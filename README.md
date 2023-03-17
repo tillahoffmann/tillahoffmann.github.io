@@ -6,3 +6,5 @@ Run a local development server in two steps:
 2. Run `make serve` to serve the website on port 4000.
 
 Requirements can be updated by running `make Gemfile.lock` and `make bash` will open an interactive terminal in the container.
+
+Notebooks in the `_notebooks` can be converted to posts by running `make notebook-posts` (see `_notebooks/convert.py` for details).
