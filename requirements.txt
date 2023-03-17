@@ -148,14 +148,8 @@ jupyterlab-pygments==0.2.2
     # via nbconvert
 jupyterlab-server==2.20.0
     # via jupyterlab
-jupytext[myst]==1.14.5
-    # via -r requirements.in
 kiwisolver==1.4.4
     # via matplotlib
-markdown-it-py==2.2.0
-    # via
-    #   jupytext
-    #   mdit-py-plugins
 markupsafe==2.1.2
     # via
     #   jinja2
@@ -166,10 +160,6 @@ matplotlib-inline==0.1.6
     # via
     #   ipykernel
     #   ipython
-mdit-py-plugins==0.3.5
-    # via jupytext
-mdurl==0.1.2
-    # via markdown-it-py
 mistune==2.0.5
     # via nbconvert
 nbclassic==0.5.3
@@ -186,7 +176,6 @@ nbconvert==7.2.10
 nbformat==5.7.3
     # via
     #   jupyter-server
-    #   jupytext
     #   nbclassic
     #   nbclient
     #   nbconvert
@@ -202,6 +191,7 @@ notebook-shim==0.2.2
     # via nbclassic
 numpy==1.24.2
     # via
+    #   -r requirements.in
     #   contourpy
     #   matplotlib
 packaging==23.0
@@ -262,9 +252,7 @@ python-dateutil==2.8.2
 python-json-logger==2.0.7
     # via jupyter-events
 pyyaml==6.0
-    # via
-    #   jupyter-events
-    #   jupytext
+    # via jupyter-events
 pyzmq==25.0.1
     # via
     #   ipykernel
@@ -307,8 +295,6 @@ terminado==0.17.1
     #   notebook
 tinycss2==1.2.1
     # via nbconvert
-toml==0.10.2
-    # via jupytext
 tomli==2.0.1
     # via
     #   build
