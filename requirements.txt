@@ -6,10 +6,6 @@
 #
 anyio==4.0.0
     # via jupyter-server
-appnope==0.1.3
-    # via
-    #   ipykernel
-    #   ipython
 argon2-cffi==23.1.0
     # via jupyter-server
 argon2-cffi-bindings==21.2.0
@@ -110,11 +106,11 @@ jupyter-core==5.4.0
     #   nbclient
     #   nbconvert
     #   nbformat
-jupyter-events==0.8.0
+jupyter-events==0.9.0
     # via jupyter-server
 jupyter-lsp==2.2.0
     # via jupyterlab
-jupyter-server==2.8.0
+jupyter-server==2.11.2
     # via
     #   jupyter-lsp
     #   jupyterlab
