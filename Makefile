@@ -2,19 +2,20 @@
 
 # Docker targets to serve the website.
 
-CMD = docker run --rm --volume=`pwd`:/srv/jekyll -p 4000:4000 -it
+CMD = docker run  --platform=linux/amd64 --rm --volume=`pwd`:/srv/jekyll -p 4000:4000 -it
+IMAGE = tillahoffmann
 
 serve : Gemfile.lock
-	${CMD} tillahoffmann jekyll serve
+	${CMD} ${IMAGE} jekyll serve
 
 bash : Gemfile.lock
-	${CMD} tillahoffmann bash
+	${CMD} ${IMAGE} bash
 
 Gemfile.lock : Gemfile
 	${CMD} jekyll/jekyll bundle update
 
-image :
-	docker build -t tillahoffmann .
+image : Gemfile.lock
+	docker build --platform=linux/amd64 -t ${IMAGE} .
 
 # Python dependencies and targets for preparing content.
 
