@@ -1,9 +1,9 @@
+__pycache__
+_playground
 _site
-.sass-cache
 .DS_Store
-*.*~
-.idea/
-.ipynb_checkpoints/
-*.pyc
+.ipynb_checkpoints
+.sass-cache
 .vscode
-_playground/
+*.*~
+*.ipynb
