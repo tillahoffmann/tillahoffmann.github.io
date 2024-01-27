@@ -1,6 +1,8 @@
 ---
 layout: default
 ---
+
+![thumbnail](/assets/2016-03-31-variational-linear-regression-in-tensorflow/2016-03-31-variational-linear-regression-in-tensorflow_2_0.png)
 We discussed some of the problems with the variational mean-field optimisation algorithms in a previous [post]({% post_url 2016-03-31-oscillating-parameters-in-variational-mean-field-approximation %}), and showed that the optimisation problem can be solved using the machine learning library `theano`. Let's try to do the same using `tensorflow`, which provides a nice optimisation interface.
 
 Here are some simulated data.

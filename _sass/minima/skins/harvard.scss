@@ -101,3 +101,23 @@ $table-border-color:    $border-color-01 !default;
   .vi    { color: #008080 } // Name.Variable.Instance
   .il    { color: #099 } // Literal.Number.Integer.Long
 }
+
+img[alt=thumbnail] {
+    display: none;
+}
+
+ul.post-list li img[alt=thumbnail] {
+    display: block;
+    float: right;
+    max-width: 30%;
+    margin-left: 1em;
+    margin-bottom: 1em;
+}
+
+.clearfix::after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+ }

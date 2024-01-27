@@ -6,7 +6,7 @@ header_pages:
   - index.html
   - about.md
 repository: tillahoffmann/tillahoffmann.github.io
-paginate: 7
+paginate: 5
 
 minima:
   social_links:

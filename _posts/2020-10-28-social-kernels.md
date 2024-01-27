@@ -11,6 +11,7 @@ author:
   - njones
 ---
 
+![thumbnail](/assets/2020-10-28-social-kernels/thumbnail.png)
 How people connect with one another is a fundamental question in the social sciences, and the resulting social networks can have a profound impact on our daily lives. Blau offered a powerful explanation: people connect with one another based on their positions in a social space. Yet a principled measure of social distance, allowing comparison within and between societies, remains elusive.
 
 We use the connectivity kernel of conditionally-independent edge models to develop a family of segregation statistics with desirable properties: they offer an intuitive and universal characteristic scale on social space (facilitating comparison across datasets and societies), are applicable to multivariate and mixed node attributes, and capture segregation at the level of individuals, pairs of individuals, and society as a whole. We show that the segregation statistics can induce a metric on Blau space (a space spanned by the attributes of the members of society) and provide maps of two societies.
