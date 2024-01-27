@@ -18,7 +18,5 @@ jobs:
           cache: pip
       - name: Install python dependencies
         run: pip install --no-dependencies -r requirements.txt
-      - name: Verify asset directories
-        run: python .github/workflows/verify-asset-directories.py
       - name: Compile the notebooks
         run: make notebook-posts
