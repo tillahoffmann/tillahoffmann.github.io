@@ -62,7 +62,7 @@ $$
 \log Q^*_j\left(\theta_j\right)\doteq -\frac 12 \sum_{i=1}^n\left(X_{ij}^2\theta_j^2 - 2 \theta_j X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]\right)
 $$
 
-such that the optimal factor $Q^*_j$ is a normal distribution with precision $\lambda_j=\sum_{i=1}^nX_{ij}^2$ and mean $\mu_j=\lambda^{-1}_j\sum_{i=1}^n X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]$. The posterior mean $\mu_j$ agrees with intuition: the best parameter estimate must account for the observations after we have controlled for the effect of all the other covariates. Let's implement the mean-field inference and plot a trace of the parameter values.
+such that the optimal factor $Q^*\_j$ is a normal distribution with precision $\lambda_j=\sum\_{i=1}^nX_{ij}^2$ and mean $\mu\_j=\lambda^{-1}\_j\sum\_{i=1}^n X_{ij} \left[y_i-\sum\_{k\neq j}X\_{ik}\left\langle\theta_k\right\rangle\right]$. The posterior mean $\mu\_j$ agrees with intuition: the best parameter estimate must account for the observations after we have controlled for the effect of all the other covariates. Let's implement the mean-field inference and plot a trace of the parameter values.
 
 
 
