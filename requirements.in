@@ -4,3 +4,4 @@ jupytext
 matplotlib
 numpy
 pip-tools
+tensorflow

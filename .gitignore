@@ -1,9 +1,11 @@
 __pycache__
 _playground
 _site
+.bundle
 .DS_Store
 .ipynb_checkpoints
 .sass-cache
 .vscode
 *.*~
 *.ipynb
+vendor
