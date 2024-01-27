@@ -5,6 +5,8 @@ layout: default
 ![thumbnail](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation_6_0.png)
 [Variational Bayesian methods](https://en.wikipedia.org/wiki/Variational_Bayesian_methods) are a great way to get around the computational challenges often associated with Bayesian inference. Because the posterior distribution is often difficult to evaluate, variational methods approximate the true posterior by a parametric distribution with known functional form. The inference algorithm is thus reduced to an optimisation problem whose objective is to tune the parameters of the approximate distribution to match the posterior. Using the popular [mean-field approximation](https://en.wikipedia.org/wiki/Variational_Bayesian_methods#In_practice), guarantees that the EM-like updates increase the evidence lower bound (ELBO) with every iteration. However, the values of the variational parameters can oscillate if they are strongly coupled by the posterior distribution. The resulting slow convergence is often not obvious from monitoring the ELBO. In this post, we illustrate the problem using a simple linear regression model, and consider alternatives that can help to fit Bayesian models using variational approximations.
 
+> **Update**: This post used [`theano`](https://pypi.org/project/Theano/), an early machine learning framework that is no longer being actively developed. The code in this post is unlikely to run using a modern machine learning setup.
+
 The standard linear regression problem is defined by
 
 $$
@@ -60,7 +62,7 @@ $$
 \log Q^*_j\left(\theta_j\right)\doteq -\frac 12 \sum_{i=1}^n\left(X_{ij}^2\theta_j^2 - 2 \theta_j X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]\right)
 $$
 
-such that the optimal factor $Q^*_j$ is a normal distribution with precision $\lambda_j=\sum_{i=1}^nX_{ij}^2$ and mean $\mu_j=\lambda^{-1}_j\sum_{i=1}^n X_{ij} \left[y_i-\sum_{k\neq j}X_{ik}\left\langle\theta_k\right\rangle\right]$. The posterior mean $\mu_j$ agrees with intuition: the best parameter estimate must account for the observations after we have controlled for the effect of all the other covariates. Let's implement the mean-field inference and plot a trace of the parameter values.
+such that the optimal factor $Q^*\_j$ is a normal distribution with precision $\lambda_j=\sum\_{i=1}^nX_{ij}^2$ and mean $\mu\_j=\lambda^{-1}\_j\sum\_{i=1}^n X_{ij} \left[y_i-\sum\_{k\neq j}X\_{ik}\left\langle\theta_k\right\rangle\right]$. The posterior mean $\mu\_j$ agrees with intuition: the best parameter estimate must account for the observations after we have controlled for the effect of all the other covariates. Let's implement the mean-field inference and plot a trace of the parameter values.
 
 
 

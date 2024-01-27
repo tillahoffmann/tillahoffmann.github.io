@@ -1,4 +1,7 @@
+black
+cython
 jupyterlab
+jupytext
 matplotlib
 numpy
 pip-tools

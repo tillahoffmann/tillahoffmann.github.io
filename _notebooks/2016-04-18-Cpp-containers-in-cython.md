@@ -1,11 +1,22 @@
 ---
 layout: default
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.16.0
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
 ---
+
 ![thumbnail](/assets/2016-04-18-Cpp-containers-in-cython/2016-04-18-Cpp-containers-in-cython_15_0.png)
 Cython's [typed memoryviews](http://docs.cython.org/src/userguide/memoryviews.html) provide a great interface for rectangular arrays. But I often need to represent jagged arrays such as the neighbours of nodes in a network. The standard python `dict` can represent such data nicely but is not statically typed. It can thus be quite slow compared with the templated containers in the C++ standard library. In this post, we'll have a look at how to use the power of the STL via cython.
 
 Let's generate a directed [Erdos-Renyi network](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model) and represent it as an adjacency list.
-
 
 ```python
 %matplotlib inline
@@ -29,7 +40,6 @@ adjacency_list = np.transpose(np.nonzero(adjacency)).astype(np.int32)
 
 The adjacency list is not particularly useful if we want to look up the neighbours of a particular node because we have to iterate over the whole list. Let's convert the adjacency list to a dictionary that maps nodes to their neighbours.
 
-
 ```python
 adjacency_map = {}
 # Iterate over all pairs of connected nodes
@@ -44,24 +54,15 @@ for u, v in adjacency_list:
 
 It is now straightforward to look up the neighbours of different nodes. For example, the neighbours of node 42 are:
 
-
 ```python
 adjacency_map[42]
 ```
-
-
-
-
-    [22, 97, 115, 145, 159, 177, 260, 620, 709, 773, 822]
-
-
 
 ## Using cython
 
 Sometimes the standard python code just doesn't perform well enough, and we want to make use of statically typed C++ code. The [`map`](http://www.cplusplus.com/reference/map/map/) container is the analogue of a dictionary in python. As usual, C++ is a bit more cumbersome. Here we go.
 
-
-```cython
+```python
 %%cython
 
 # distutils: language = c++
@@ -137,37 +138,21 @@ cdef class AdjacencyMap:
             iterator = self.container.find(egos[i])
 ```
 
-
 ```python
 stl_adjacency_map = AdjacencyMap(adjacency_list)
 stl_adjacency_map.get(42)
 ```
 
-
-
-
-    [22, 97, 115, 145, 159, 177, 260, 620, 709, 773, 822]
-
-
-
 ## Comparison of the two implementations
 
 Let's compare the two implementations in terms of performance.
-
 
 ```python
 %timeit adjacency_map.get(42)
 %timeit stl_adjacency_map.get(42)
 ```
 
-    744 ns ± 45.2 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
-
-
-    233 ns ± 7.87 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
-
-
 Ok, the complex implementation is a bit faster than the standard python implementation but it really doesn't seem worth the effort. It turns out the largest performance cost is the overhead from calling the C++ function from python. If we just want to look up neighbours in the C++ code, it's super fast. The class above has a simple function `_get_many` to illustrate this effect: it looks up the neighbours of a particular node a large number of times such that we can tease out how much the performance depends on the overhead.
-
 
 ```python
 # The number of repetitions to perform
@@ -179,7 +164,6 @@ for repeat in repeats:
     result = %timeit -o -q stl_adjacency_map._get_many(egos)
     cpp_times.append(result)
 ```
-
 
 ```python
 # Do the same for python
@@ -194,7 +178,6 @@ for repeat in repeats:
     result = %timeit -o -q _get_many(egos)
     python_times.append(result)
 ```
-
 
 ```python
 # Extract times and convert to nanoseconds
@@ -222,12 +205,6 @@ f = 0.8
 plt.xlim(1 * f, 1e4 / f)
 pass
 ```
-
-
-    
-![png](/assets/2016-04-18-Cpp-containers-in-cython/2016-04-18-Cpp-containers-in-cython_15_0.png)
-    
-
 
 Wow, most of the computational time is taken up by the overhead of calling the function and converting the results into a format that python can handle (rather than a C++ vector).
 
