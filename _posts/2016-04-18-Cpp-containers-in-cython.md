@@ -1,8 +1,7 @@
 ---
 layout: default
 ---
-
-![thumbnail](/assets/2016-04-18-Cpp-containers-in-cython/2016-04-18-Cpp-containers-in-cython_15_0.png)
+![thumbnail](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation_6_0.png)
 Cython's [typed memoryviews](http://docs.cython.org/src/userguide/memoryviews.html) provide a great interface for rectangular arrays. But I often need to represent jagged arrays such as the neighbours of nodes in a network. The standard python `dict` can represent such data nicely but is not statically typed. It can thus be quite slow compared with the templated containers in the C++ standard library. In this post, we'll have a look at how to use the power of the STL via cython.
 
 Let's generate a directed [Erdos-Renyi network](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model) and represent it as an adjacency list.
@@ -10,7 +9,7 @@ Let's generate a directed [Erdos-Renyi network](https://en.wikipedia.org/wiki/Er
 
 ```python
 %matplotlib inline
-%load_ext cython
+%reload_ext cython
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
@@ -53,7 +52,7 @@ adjacency_map[42]
 
 
 
-    [127, 315, 550, 618, 738, 926]
+    [10, 61, 218, 253, 257, 279, 382, 475, 650, 750, 826, 941]
 
 
 
@@ -106,7 +105,7 @@ cdef class AdjacencyMap:
                 # Insert a new key value pair
                 neighbourhood = cpp_neighbourhood()
                 neighbourhood.push_back(alter)
-                self.container.insert(lb, cpp_item(ego, neighbourhood))
+                self.container.insert(<cpp_adjacency_map.const_iterator> lb, cpp_item(ego, neighbourhood))
 
     def get(self, int ego):
         """
@@ -147,7 +146,7 @@ stl_adjacency_map.get(42)
 
 
 
-    [127, 315, 550, 618, 738, 926]
+    [10, 61, 218, 253, 257, 279, 382, 475, 650, 750, 826, 941]
 
 
 
@@ -161,10 +160,10 @@ Let's compare the two implementations in terms of performance.
 %timeit stl_adjacency_map.get(42)
 ```
 
-    The slowest run took 31.22 times longer than the fastest. This could mean that an intermediate result is being cached.
-    1000000 loops, best of 3: 1.63 µs per loop
-    The slowest run took 5.81 times longer than the fastest. This could mean that an intermediate result is being cached.
-    1000000 loops, best of 3: 656 ns per loop
+    686 ns ± 9.17 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
+
+
+    268 ns ± 5.63 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
 
 
 Ok, the complex implementation is a bit faster than the standard python implementation but it really doesn't seem worth the effort. It turns out the largest performance cost is the overhead from calling the C++ function from python. If we just want to look up neighbours in the C++ code, it's super fast. The class above has a simple function `_get_many` to illustrate this effect: it looks up the neighbours of a particular node a large number of times such that we can tease out how much the performance depends on the overhead.
@@ -177,7 +176,7 @@ cpp_times = []
 # Use the timeit module to figure out how long it takes to call the function
 for repeat in repeats:
     egos = np.random.randint(n, size=repeat).astype(np.int32)
-    result = %timeit -o -q -r 20 stl_adjacency_map._get_many(egos)
+    result = %timeit -o -q stl_adjacency_map._get_many(egos)
     cpp_times.append(result)
 ```
 
@@ -192,7 +191,7 @@ python_times = []
 # Use the timeit module to figure out how long it takes to call the function
 for repeat in repeats:
     egos = np.random.randint(n, size=repeat)
-    result = %timeit -o -q -r 20 _get_many(egos)
+    result = %timeit -o -q _get_many(egos)
     python_times.append(result)
 ```
 
@@ -224,9 +223,9 @@ pass
 ```
 
 
-
+    
 ![png](/assets/2016-04-18-Cpp-containers-in-cython/2016-04-18-Cpp-containers-in-cython_15_0.png)
-
+    
 
 
 Wow, most of the computational time is taken up by the overhead of calling the function and converting the results into a format that python can handle (rather than a C++ vector).

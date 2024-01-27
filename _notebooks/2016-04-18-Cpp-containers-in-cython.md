@@ -13,13 +13,14 @@ jupyter:
     name: python3
 ---
 
+![thumbnail](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation_6_0.png)
 Cython's [typed memoryviews](http://docs.cython.org/src/userguide/memoryviews.html) provide a great interface for rectangular arrays. But I often need to represent jagged arrays such as the neighbours of nodes in a network. The standard python `dict` can represent such data nicely but is not statically typed. It can thus be quite slow compared with the templated containers in the C++ standard library. In this post, we'll have a look at how to use the power of the STL via cython.
 
 Let's generate a directed [Erdos-Renyi network](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model) and represent it as an adjacency list.
 
 ```python
 %matplotlib inline
-%load_ext cython
+%reload_ext cython
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
@@ -61,7 +62,8 @@ adjacency_map[42]
 
 Sometimes the standard python code just doesn't perform well enough, and we want to make use of statically typed C++ code. The [`map`](http://www.cplusplus.com/reference/map/map/) container is the analogue of a dictionary in python. As usual, C++ is a bit more cumbersome. Here we go.
 
-```cython
+```python
+%%cython
 
 # distutils: language = c++
 # cython: boundscheck = False
@@ -81,21 +83,21 @@ from cython.operator cimport dereference as deref, preincrement as preinc
 cdef class AdjacencyMap:
     cdef:
         cpp_adjacency_map container
-        
+
     def __init__(self, int[:, :] adjacency_list):
         cdef:
             int i, ego, alter
             cpp_neighbourhood neighbourhood
-            
+
         # Iterate over all entries of the adjacency list
         for i in range(adjacency_list.shape[0]):
             ego = adjacency_list[i, 0]
             alter = adjacency_list[i, 1]
-            
-            # Check if the ego is already in the map 
+
+            # Check if the ego is already in the map
             # (see http://stackoverflow.com/a/101980/1150961 for details)
             lb = self.container.lower_bound(ego)
-            
+
             # Check if the key already exists
             if lb != self.container.end() and ego == deref(lb).first:
                 # Add the node to the pair
@@ -104,8 +106,8 @@ cdef class AdjacencyMap:
                 # Insert a new key value pair
                 neighbourhood = cpp_neighbourhood()
                 neighbourhood.push_back(alter)
-                self.container.insert(lb, cpp_item(ego, neighbourhood))
-                
+                self.container.insert(<cpp_adjacency_map.const_iterator> lb, cpp_item(ego, neighbourhood))
+
     def get(self, int ego):
         """
         Get the neighbours of `ego` or `None` if `ego` isn't in the map.
@@ -123,9 +125,9 @@ cdef class AdjacencyMap:
         while neighbourhood_iterator != neighbourhood.end():
             values.append(deref(neighbourhood_iterator))
             preinc(neighbourhood_iterator)
-            
+
         return values
-    
+
     def _get_many(self, int[:] egos):
         """
         Simple function to illustrate overhead.
@@ -159,7 +161,7 @@ cpp_times = []
 # Use the timeit module to figure out how long it takes to call the function
 for repeat in repeats:
     egos = np.random.randint(n, size=repeat).astype(np.int32)
-    result = %timeit -o -q -r 20 stl_adjacency_map._get_many(egos)
+    result = %timeit -o -q stl_adjacency_map._get_many(egos)
     cpp_times.append(result)
 ```
 
@@ -173,7 +175,7 @@ python_times = []
 # Use the timeit module to figure out how long it takes to call the function
 for repeat in repeats:
     egos = np.random.randint(n, size=repeat)
-    result = %timeit -o -q -r 20 _get_many(egos)
+    result = %timeit -o -q _get_many(egos)
     python_times.append(result)
 ```
 

@@ -131,7 +131,7 @@ def plot_elbo_trace(elbos, ax=None):
 
 def plot_trace(elbos, trace, reference=None, X=None, sigma=3, step=1):
     # Create figure
-    fig, (ax1, ax2) = plt.subplots(1, 2, True)
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharex=True)
 
     # Plot
     plot_parameter_trace(trace, reference, X, sigma, step, ax1)
