@@ -1,4 +1,6 @@
+black
 jupyterlab
+jupytext
 matplotlib
 numpy
 pip-tools
