@@ -1,19 +1,24 @@
-name: Till's Personal Website
+name: Till's Website
 on:
   push:
-    branches: [master]
+    branches: ["main"]
   pull_request:
-    branches: [master]
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build
+    runs-on: "ubuntu-latest"
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v3
-      - name: Setup python
-        uses: actions/setup-python@v4
+      - uses: "actions/checkout@v4"
+      - uses: "actions/setup-python@v5"
         with:
           python-version: "3.10"
+          cache: pip
+      - name: Install python dependencies
+        run: pip install --no-dependencies -r requirements.txt
       - name: Verify asset directories
         run: python .github/workflows/verify-asset-directories.py
+      - name: Compile the notebooks
+        run: make notebook-posts
