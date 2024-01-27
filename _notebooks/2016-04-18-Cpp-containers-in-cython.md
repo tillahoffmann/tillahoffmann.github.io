@@ -199,6 +199,7 @@ plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('Number of repetitions')
 plt.ylabel('Time per repetition in nanoseconds')
+plt.legend()
 # Fix the limits of the plot
 f = 0.8
 plt.xlim(1 * f, 1e4 / f)

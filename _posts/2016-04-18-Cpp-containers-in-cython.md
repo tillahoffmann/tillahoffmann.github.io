@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-![thumbnail](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation_6_0.png)
+![thumbnail](/assets/2016-04-18-Cpp-containers-in-cython/2016-04-18-Cpp-containers-in-cython_15_0.png)
 Cython's [typed memoryviews](http://docs.cython.org/src/userguide/memoryviews.html) provide a great interface for rectangular arrays. But I often need to represent jagged arrays such as the neighbours of nodes in a network. The standard python `dict` can represent such data nicely but is not statically typed. It can thus be quite slow compared with the templated containers in the C++ standard library. In this post, we'll have a look at how to use the power of the STL via cython.
 
 Let's generate a directed [Erdos-Renyi network](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93R%C3%A9nyi_model) and represent it as an adjacency list.
@@ -52,7 +52,7 @@ adjacency_map[42]
 
 
 
-    [10, 61, 218, 253, 257, 279, 382, 475, 650, 750, 826, 941]
+    [22, 97, 115, 145, 159, 177, 260, 620, 709, 773, 822]
 
 
 
@@ -146,7 +146,7 @@ stl_adjacency_map.get(42)
 
 
 
-    [10, 61, 218, 253, 257, 279, 382, 475, 650, 750, 826, 941]
+    [22, 97, 115, 145, 159, 177, 260, 620, 709, 773, 822]
 
 
 
@@ -160,10 +160,10 @@ Let's compare the two implementations in terms of performance.
 %timeit stl_adjacency_map.get(42)
 ```
 
-    686 ns ± 9.17 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
+    744 ns ± 45.2 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
 
 
-    268 ns ± 5.63 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
+    233 ns ± 7.87 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
 
 
 Ok, the complex implementation is a bit faster than the standard python implementation but it really doesn't seem worth the effort. It turns out the largest performance cost is the overhead from calling the C++ function from python. If we just want to look up neighbours in the C++ code, it's super fast. The class above has a simple function `_get_many` to illustrate this effect: it looks up the neighbours of a particular node a large number of times such that we can tease out how much the performance depends on the overhead.
@@ -216,6 +216,7 @@ plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('Number of repetitions')
 plt.ylabel('Time per repetition in nanoseconds')
+plt.legend()
 # Fix the limits of the plot
 f = 0.8
 plt.xlim(1 * f, 1e4 / f)
