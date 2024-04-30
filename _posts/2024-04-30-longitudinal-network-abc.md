@@ -2,8 +2,10 @@
 layout: publication
 title: Approximate Inference for Longitudinal Mechanistic HIV Contact Networks
 type: article
-venue: arXiv
-doi: 10.48550/arXiv.2401.04775
+venue: Applied Network Science
+doi: 10.1007/s41109-024-00616-4
+volume: 9
+pages: 12
 author:
 - osmiley
 - me
