@@ -4,8 +4,11 @@ _site
 .bundle
 .DS_Store
 .ipynb_checkpoints
+.jekyll-cache
+.ruby-version
 .sass-cache
 .vscode
 *.*~
 *.ipynb
+playground
 vendor
