@@ -1,4 +1,7 @@
 url: http://tillahoffmann.github.io
+exclude:
+  - .git
+  - venv
 remote_theme: jekyll/minima@49f6dce0727a2441f0b0c265b41b5efc7b042eb6
 title: Till Hoffmann
 show_excerpts: true
