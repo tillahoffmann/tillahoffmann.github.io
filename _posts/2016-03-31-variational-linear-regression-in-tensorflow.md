@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 ---
 
 ![thumbnail](/assets/2016-03-31-variational-linear-regression-in-tensorflow/2016-03-31-variational-linear-regression-in-tensorflow_2_0.png)

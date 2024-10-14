@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 published: false
 ---
 
@@ -94,4 +94,3 @@ Consider a synthetic dataset of $N=100$ data points generated from a population 
 
 1.  Mark Newman. _[Networks: An Introduction](http://www.amazon.co.uk/Networks-Introduction-Mark-Newman/dp/0199206651)_. OUP, 2010\. ISBN 0199206651.
 2.  David J. C. MacKay. _[Information Theory, Inference and Learning Algorithms](http://www.amazon.co.uk/Information-Theory-Inference-Learning-Algorithms/dp/0521642981)_. CUP, 2003\. ISBN 0521642981.
-

@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 jupyter:
   jupytext:
     text_representation:

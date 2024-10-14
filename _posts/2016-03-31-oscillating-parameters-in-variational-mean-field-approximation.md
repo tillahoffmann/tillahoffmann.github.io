@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 ---
 
 ![thumbnail](/assets/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation/2016-03-31-oscillating-parameters-in-variational-mean-field-approximation_6_0.png)
