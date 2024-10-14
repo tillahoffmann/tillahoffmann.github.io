@@ -7,6 +7,9 @@ header_pages:
   - about.md
 repository: tillahoffmann/tillahoffmann.github.io
 paginate: 5
+plugins:
+  - jekyll-paginate
+  - jekyll-remote-theme
 
 minima:
   social_links:
