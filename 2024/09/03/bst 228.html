@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>BST228: Applied Bayesian Analysis | Till Hoffmann</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="BST228: Applied Bayesian Analysis" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="BST228 Applied Bayesian Analysis is a practical introduction to the Bayesian analysis of biomedical data taught in the Department of Biostatistics at the Harvard T.H. Chan School of Public Health taught by Prof Stephenson and Dr Hoffmann. It is an intermediate graduate-level course in the philosophy, analytic strategies, implementation, and interpretation of Bayesian data analysis. Specific topics that will be covered include: the Bayesian paradigm; Bayesian analysis of basic models; Markov Chain Monte Carlo for posterior inference; Stan R software package for Bayesian data analysis; linear regression; hierarchical regression models; generalized linear models; meta-analysis; models for missing data." />
+<meta property="og:description" content="BST228 Applied Bayesian Analysis is a practical introduction to the Bayesian analysis of biomedical data taught in the Department of Biostatistics at the Harvard T.H. Chan School of Public Health taught by Prof Stephenson and Dr Hoffmann. It is an intermediate graduate-level course in the philosophy, analytic strategies, implementation, and interpretation of Bayesian data analysis. Specific topics that will be covered include: the Bayesian paradigm; Bayesian analysis of basic models; Markov Chain Monte Carlo for posterior inference; Stan R software package for Bayesian data analysis; linear regression; hierarchical regression models; generalized linear models; meta-analysis; models for missing data." />
+<link rel="canonical" href="http://localhost:4000/2024/09/03/bst228.html" />
+<meta property="og:url" content="http://localhost:4000/2024/09/03/bst228.html" />
+<meta property="og:site_name" content="Till Hoffmann" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-03T00:00:00-04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="BST228: Applied Bayesian Analysis" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2024/09/03/bst228.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2024/09/03/bst228.html"},"@type":"BlogPosting","description":"BST228 Applied Bayesian Analysis is a practical introduction to the Bayesian analysis of biomedical data taught in the Department of Biostatistics at the Harvard T.H. Chan School of Public Health taught by Prof Stephenson and Dr Hoffmann. It is an intermediate graduate-level course in the philosophy, analytic strategies, implementation, and interpretation of Bayesian data analysis. Specific topics that will be covered include: the Bayesian paradigm; Bayesian analysis of basic models; Markov Chain Monte Carlo for posterior inference; Stan R software package for Bayesian data analysis; linear regression; hierarchical regression models; generalized linear models; meta-analysis; models for missing data.","headline":"BST228: Applied Bayesian Analysis","dateModified":"2024-09-03T00:00:00-04:00","datePublished":"2024-09-03T00:00:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Till Hoffmann" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/katex.min.css" integrity="sha384-t5CR+zwDAROtph0PXGte6ia8heboACF9R5l/DiY+WZ3P2lxNgvJkQk5n7GPvLMYw" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering. -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/katex.min.js" integrity="sha384-FaFLTlohFghEIZkw6VGwmf9ISTubWAVYW8tG8+w2LAIftJEULZABrF9PPFv+tVkH" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension. -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.0/dist/contrib/auto-render.min.js" integrity="sha384-bHBqxz8fokvgoJ/sc17HODNxa42TlaEhB+w8ZJXTc2nZf1VgEaFZeZvT4Mznfz0v" crossorigin="anonymous"
+    onload="renderKatex()"></script>
+
+<!-- Rendering code. -->
+<script>
+    function renderKatex() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '$$', right: '$$', display: true},
+            ],
+        });
+    }
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Till Hoffmann</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/teaching.html">Teaching</a><a class="page-link" href="/about.html">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">BST228: Applied Bayesian Analysis</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2024-09-03T00:00:00-04:00" itemprop="datePublished">
+        Sep 3, 2024
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>BST228 Applied Bayesian Analysis is a practical introduction to the Bayesian analysis of biomedical data taught in the <a href="https://www.hsph.harvard.edu/biostatistics/">Department of Biostatistics</a> at the <a href="https://www.hsph.harvard.edu">Harvard T.H. Chan School of Public Health</a> taught by <a href="https://www.hsph.harvard.edu/briana-stephenson/">Prof Stephenson</a> and Dr Hoffmann. It is an intermediate graduate-level course in the philosophy, analytic strategies, implementation, and interpretation of Bayesian data analysis. Specific topics that will be covered include: the Bayesian paradigm; Bayesian analysis of basic models; Markov Chain Monte Carlo for posterior inference; Stan R software package for Bayesian data analysis; linear regression; hierarchical regression models; generalized linear models; meta-analysis; models for missing data.</p>
+
+<h2 id="lectures">Lectures</h2>
+
+<ol>
+  <li><strong>Introduction</strong> (taught by Prof Stephenson)</li>
+  <li><strong>The Bayesian Paradigm</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Mechanics of Bayes’ Theorem and Prior Distributions</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Posteriors, Prediction, and Simple Models</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Binomial, Poisson, and Normal Models</strong> (taught by Dr Hoffmann, <a href="/assets/2024-09-03-bst228/lecture_05_simple_models-post.pdf">slides</a>): Similarities and differences between binomial and Poisson models; what constitutes a “non-informative” prior; normal likelihood.</li>
+  <li><strong>Normal and Multivariate Models</strong> (taught by Dr Hoffmann, <a href="/assets/2024-09-03-bst228/lecture_06_normal_models-post.pdf">slides</a>): Choosing hyperparameters for weakly-informative priors; posterior for location parameter of normal likelihood given known precision parameter and vice versa.</li>
+  <li><strong>Joint Inference</strong> (taught by Dr Hoffmann, <a href="/assets/2024-09-03-bst228/lecture_07_joint_inference-post.pdf">slides</a>): Joint and marginal distributions; normal-gamma conjugate prior for normal data with unknown location and precision; marginal posterior for location and precision parameters.</li>
+  <li><strong>Introduction to MCMC</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Gibbs Sampler</strong> (taught by Prof Stephenson)</li>
+  <li><strong>MCMC Diagnostics</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Linear Regression</strong> (taught by Dr Hoffmann, <a href="/assets/2024-09-03-bst228/lecture_11_regression-post.pdf">slides</a>): Review of MCMC diagnostics; generic Metropolis sampler implementation in R; linear regression likelihood; constructing regression features from data; conditional distributions for Gibbs sampling regression parameters.</li>
+  <li><strong>Regression Case Study</strong> (taught by Dr Hoffmann, <a href="/assets/2024-09-03-bst228/lecture_12_regression_case_studies-post.pdf">slides</a>): Limiting cases of conditional distributions for regression parameters; funnels in coefficient-precision space; posterior correlation for regression coefficients for features with non-zero mean; interpreting regression coefficients; posterior predictive distribution for linear regression.</li>
+  <li><strong>Generalized Linear Models &amp; Stan</strong> (taught by Dr Hoffmann, <a href="/assets/2024-09-03-bst228/lecture_13_glm_and_stan-post.pdf">slides</a>): Heteroskedastic regression; generalized linear models applied to an example of incumbency advantage in United States House of Representatives elections; introduction to Stan to decouple model definition and posterior sampling.</li>
+  <li><strong>Hierarchical Models I</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Hierarchical Models II</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Hierarchical Regression</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Midterm Review</strong></li>
+  <li><strong>Midterm Exam</strong></li>
+  <li><strong>Bayesian Model Averaging</strong> (taught by Prof Stephenson)</li>
+  <li><strong>Model Checking</strong> (taught by Dr Hoffmann, <a href="/assets/2024-09-03-bst228/lecture_20_model_checking-post.pdf">slides</a>): sensitivity of Bayesian model averaging to priors, posterior predictive replication, identifying problems with models using replicated data.</li>
+</ol>
+
+<p>Future materials will be posted after the next lecture.</p>
+
+  </div><a class="u-url" href="/2024/09/03/bst228.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/tillahoffmann" title="tillahoffmann"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/tillahoffmann" title="tillahoffmann"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/tillahoffmann" title="tillahoffmann"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
