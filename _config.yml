@@ -7,6 +7,7 @@ title: Till Hoffmann
 show_excerpts: true
 header_pages:
   - index.html
+  - research.md
   - teaching.md
   - about.md
 repository: tillahoffmann/tillahoffmann.github.io
