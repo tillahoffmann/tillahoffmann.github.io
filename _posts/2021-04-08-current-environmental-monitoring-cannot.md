@@ -2,7 +2,7 @@
 layout: publication
 title: Current Environmental Monitoring Cannot Constrain the Effect of Vaccines on SARS-CoV-2 Transmission
 type: techreport
-url: https://www.gov.uk/government/publications/jbc-and-defra-current-environmental-monitoring-cannot-constrain-the-effect-of-vaccines-on-sars-cov-2-transmission-8-april-2021
+link: https://www.gov.uk/government/publications/jbc-and-defra-current-environmental-monitoring-cannot-constrain-the-effect-of-vaccines-on-sars-cov-2-transmission-8-april-2021
 author:
   - me
   - smcintyre-nolan

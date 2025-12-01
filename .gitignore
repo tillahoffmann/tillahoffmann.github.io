@@ -5,10 +5,10 @@ _site
 .DS_Store
 .ipynb_checkpoints
 .jekyll-cache
-.ruby-version
 .sass-cache
 .vscode
 *.*~
 *.ipynb
 playground
+private/
 vendor

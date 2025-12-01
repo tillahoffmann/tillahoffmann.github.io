@@ -10,9 +10,15 @@
         <span class="p-author h-card" itemprop="familyName">{{ author.last }}</span></span>
     {%- if author.url %}</a>{%endif-%}{%- if forloop.last == false and publication.author.size > 2 %}, {% endif -%}
 {% endfor %}
-{% if publication.type == "article" %}
+{% if publication.type == "article" and publication.venue %}
 in
-<a target="_blank" href="{% if publication.doi %}https://doi.org/{{publication.doi}}{%else%}{{publication.publication_url}}{%endif%}">
+<a target="_blank" href="{% if publication.doi %}https://doi.org/{{publication.doi}}{%else%}{{publication.link}}{%endif%}">
 <i>{{publication.venue}}</i></a>
+{% elsif publication.type == "patent" %}
+•
+<a target="_blank" href="{{publication.link}}">{{publication.pages}}</a>
+{% elsif publication.type == "techreport" %}
+•
+<a target="_blank" href="{{publication.link}}">Technical Report</a>
 {% endif %}
 </span>
